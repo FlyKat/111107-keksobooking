@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Екатерина Давлятчина](https://up.htmlacademy.ru/javascript/10/user/111107).
-* Наставник: `Неизвестно`.
+* Наставник: [Игорь Антонов](https://up.htmlacademy.ru/javascript/10/user/3162).
 
 ---
 
