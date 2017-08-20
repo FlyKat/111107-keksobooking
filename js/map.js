@@ -61,7 +61,7 @@ for (var i = 0; i < adsCount; i++) {
       avatar: 'img/avatars/user0' + avatarsNumbers[i] + '.png'
     },
     offer: {
-      title: titles[i];
+      title: titles[i],
       address: '',
       price: getRandomIntInRange(1000, 1000000),
       type: TYPES[i],
