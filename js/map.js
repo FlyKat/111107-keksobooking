@@ -17,6 +17,12 @@ var TYPES = [
   'bungalo'
 ];
 
+var TYPES_CIRILLIC = {
+  flat: 'Квартира',
+  house: 'Дом',
+  bungalo: 'Бунгало'
+};
+
 var TIMES = [
   '12:00',
   '13:00',
@@ -36,6 +42,26 @@ var AVATARS_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8];
 
 var RENT_OFFERS_COUNT = 8;
 
+var PRICE = {
+  min: 1000,
+  max: 1000000
+};
+
+var ROOMS = {
+  min: 1,
+  max: 5
+};
+
+var GUESTS = {
+  min: 1,
+  max: 10
+};
+
+var LOCATION = {
+  x: [300, 900],
+  y: [100, 500]
+};
+
 /**
  * Возвращает случайный номер в заданном диапазоне (включая max)
  * @param  {[number]} min
@@ -45,7 +71,6 @@ var RENT_OFFERS_COUNT = 8;
 function getRandomIntInRange(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
-
 
 /**
  * Возвращает случайный элемент массива
@@ -81,62 +106,119 @@ function shuffle(arr) {
  */
 function getRentOffers() {
   var rentOffers = [];
-
   var avatarsNumbers = shuffle(AVATARS_NUMBERS);
   var titles = shuffle(TITLES);
   var features = shuffle(FEATURES);
 
   for (var i = 0; i < RENT_OFFERS_COUNT; i++) {
-    rentOffers[i] = {};
+    var locationX = getRandomIntInRange(LOCATION.x[0], LOCATION.x[1]);
+    var locationY = getRandomIntInRange(LOCATION.y[0], LOCATION.y[1]);
 
-    rentOffers[i].author = {};
-    rentOffers[i].author = 'img/avatars/user0' + avatarsNumbers[i] + '.png';
+    rentOffers[i] = {
+      author: {
+        avatar: 'img/avatars/user0' + avatarsNumbers[i] + '.png'
+      },
 
-    rentOffers[i].location = {};
-    rentOffers[i].location.x = getRandomIntInRange(300, 900);
-    rentOffers[i].location.y = getRandomIntInRange(100, 500);
+      offer: {
+        title: titles[i],
+        address: locationX + ', ' + locationY,
+        price: getRandomIntInRange(PRICE.min, PRICE.max),
+        type: getRandomElement(TYPES),
+        rooms: getRandomIntInRange(ROOMS.min, ROOMS.max),
+        guests: getRandomIntInRange(GUESTS.min, GUESTS.max),
+        checkin: getRandomElement(TIMES),
+        checkout: getRandomElement(TIMES),
+        features: features,
+        description: '',
+        photos: []
+      },
 
-    rentOffers[i].offer = {};
-    rentOffers[i].offer.title = titles[i];
-    rentOffers[i].offer.address = rentOffers[i].location.x + ', ' + rentOffers[i].location.y;
-    rentOffers[i].offer.price = getRandomIntInRange(1000, 1000000);
-    rentOffers[i].offer.type = getRandomElement(TYPES);
-    rentOffers[i].offer.rooms = getRandomIntInRange(1, 5);
-    rentOffers[i].offer.guests = getRandomIntInRange(1, 5);
-    rentOffers[i].offer.checkin = getRandomElement(TIMES);
-    rentOffers[i].offer.checkout = getRandomElement(TIMES);
-    rentOffers[i].offer.features = features;
-    rentOffers[i].offer.description = '';
-    rentOffers[i].offer.photos = [];
+      location: {
+        x: locationX,
+        y: locationY
+      }
+    };
   }
 
   return rentOffers;
 }
 
-getRentOffers();
+/**
+ * Создает пин
+ * @param  {[obj]} rentOffer
+ * @return {[type]} DOM-элемент
+ */
+function getPin(rentOffer) {
+  var pin = document.createElement('div');
+  var pinImg = document.createElement('img');
+  var pinWidth = 56;
+  var pinHeight = 75;
+
+  pin.className = 'pin';
+  pin.style.left = rentOffer.location.x - pinWidth / 2 + 'px';
+  pin.style.top = rentOffer.location.y - pinHeight + 'px';
+
+  pinImg.className = 'rounded';
+  pinImg.width = 40;
+  pinImg.height = 40;
+  pinImg.src = rentOffer.author.avatar;
+
+  pin.appendChild(pinImg);
+
+  return pin;
+}
 
 
-/* for (var i = 0; i < rentOffersCount; i++) {
-  rentOffers[i] = {
-    author: {
-      avatar: 'img/avatars/user0' + avatarsNumbers[i] + '.png'
-    },
-    offer: {
-      title: titles[i],
-      address: rentOffers.location.x + ', ' + rentOffers.location.y,
-      price: getRandomIntInRange(1000, 1000000),
-      type: getRandomElement(TYPES),
-      rooms: getRandomIntInRange(1, 5),
-      guests: getRandomIntInRange(1, 5),
-      checkin: getRandomElement(TIMES),
-      checkout: getRandomElement(TIMES),
-      features: [],
-      description: '',
-      photos: []
-    },
-    location: {
-      x: getRandomIntInRange(300, 900),
-      y: getRandomIntInRange(100, 500)
-    }
-  };
-}*/
+/**
+ * Cоздает пины в DOM
+ * @param  {[array]} rentOffers
+ */
+function renderPins(rentOffers) {
+  var fragment = document.createDocumentFragment();
+
+  rentOffers.forEach(function (rentOffer) {
+    fragment.appendChild(getPin(rentOffer));
+  });
+
+  pinsList.appendChild(fragment);
+}
+
+/**
+ *На основе шаблона и данных из массива создает объявление
+ * @param  {[array]} rentOffers
+ * @return {[type]} DOM-элемент
+ */
+function renderRentOffer(rentOffers) {
+  var rentOfferTemplate = document.querySelector('#lodge-template').content;
+  var lodgeElement = rentOfferTemplate.querySelector('.dialog__panel').cloneNode(true);
+
+  lodgeElement.querySelector('.lodge__title').textContent = rentOffers.offer.title;
+  lodgeElement.querySelector('.lodge__address').textContent = rentOffers.offer.address;
+  lodgeElement.querySelector('.lodge__price').innerHTML = rentOffers.offer.price + '&#x20bd;/ночь';
+  lodgeElement.querySelector('.lodge__type').textContent = TYPES_CIRILLIC[rentOffers.offer.type];
+
+  lodgeElement.querySelector('.lodge__rooms-and-guests').textContent = 'Для ' + rentOffers.offer.guests + ' гостей в ' + rentOffers.offer.rooms + ' комнатах';
+  lodgeElement.querySelector('.lodge__checkin-time').textContent = 'Заезд после ' + rentOffers.offer.checkin + ', выезд до ' + rentOffers.offer.checkout;
+
+  rentOffers.offer.features.forEach(function (feature) {
+    var element = document.createElement('span');
+    element.className = 'feature__image feature__image--' + feature;
+    lodgeElement.querySelector('.lodge__features').appendChild(element);
+  });
+
+  lodgeElement.querySelector('.lodge__description').textContent = rentOffers.offer.description;
+
+  avatarImg.src = rentOffers.author.avatar;
+
+  return lodgeElement;
+}
+
+var pinsList = document.querySelector('.tokyo__pin-map');
+var dialog = document.querySelector('.dialog');
+var dialogPanel = dialog.querySelector('.dialog__panel');
+var avatar = dialog.querySelector('.dialog__title');
+var avatarImg = avatar.querySelector('img');
+
+var rentOffers = getRentOffers();
+renderPins(rentOffers);
+dialog.replaceChild(renderRentOffer(rentOffers[0]), dialogPanel);
