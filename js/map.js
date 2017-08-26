@@ -181,7 +181,7 @@ function renderPins(rentOffers) {
     fragment.appendChild(getPin(rentOffer));
   });
 
-  pinsList.appendChild(fragment);
+  pinMap.appendChild(fragment);
 }
 
 /**
@@ -214,12 +214,51 @@ function renderRentOffer(rentOffer) {
 }
 
 var rentOfferTemplate = document.querySelector('#lodge-template').content;
-var pinsList = document.querySelector('.tokyo__pin-map');
+var pinMap = document.querySelector('.tokyo__pin-map');
+//var pinElement= pinMap.querySelectorAll('.pin');
 var dialog = document.querySelector('.dialog');
 var dialogPanel = dialog.querySelector('.dialog__panel');
+var dialogClose = dialog.querySelector('dialog__close');
 var avatar = dialog.querySelector('.dialog__title');
 var avatarImg = avatar.querySelector('img');
+
+var KEYCODS = {
+  esc: 27,
+  enter: 13
+}
+
+
+function activatePin() {
+  if (!pinElement.classList.contains('pin--active')) {
+    pinElement.classList.add('pin--active');
+  } else {
+    pinElement.remove('pin--active');
+  }
+}
+
 
 var rentOffers = getRentOffers();
 renderPins(rentOffers);
 dialog.replaceChild(renderRentOffer(rentOffers[0]), dialogPanel);
+
+
+pinMap.addEventListener('click', function (evt) {
+  var target = evt.target;
+  var pins = pinMap.querySelectorAll('.pin');
+  avatarImg.src = target.src;
+
+  pins.forEach(function (pin) {
+    pin.classList.remove('pin--active');
+  });
+
+  if (target.className === '.pin') {
+    target.classList.add('pin--active');
+  }
+
+  if (target.localName === 'img') {
+    target.parentNode.classList.add('pin--active');
+   }
+});
+
+
+//(.pin:not(:first-child)');
