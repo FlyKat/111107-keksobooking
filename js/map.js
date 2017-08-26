@@ -245,7 +245,6 @@ dialog.replaceChild(renderRentOffer(rentOffers[0]), dialogPanel);
 pinMap.addEventListener('click', function (evt) {
   var target = evt.target;
   var pins = pinMap.querySelectorAll('.pin');
-  avatarImg.src = target.src;
 
   pins.forEach(function (pin) {
     pin.classList.remove('pin--active');
@@ -253,10 +252,12 @@ pinMap.addEventListener('click', function (evt) {
 
   if (target.className === 'pin') {
     target.classList.add('pin--active');
+    avatarImg.src = target.firstChild.getAttribute('src');
   }
 
   if (target.localName === 'img') {
     target.parentNode.classList.add('pin--active');
+    avatarImg.src = target.src;
    }
 });
 
