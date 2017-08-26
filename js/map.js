@@ -251,7 +251,7 @@ pinMap.addEventListener('click', function (evt) {
     pin.classList.remove('pin--active');
   });
 
-  if (target.className === '.pin') {
+  if (target.className === 'pin') {
     target.classList.add('pin--active');
   }
 
