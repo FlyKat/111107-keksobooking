@@ -310,3 +310,54 @@ dialogClose.addEventListener('keydown', function (evt) {
 });
 
 dialog.replaceChild(renderAdCard(ads[0]), dialogPanel);
+
+var noticeForm = document.querySelector('.notice__form');
+var timein = noticeForm.querySelector('#timein');
+var timeout = noticeForm.querySelector('#timeout');
+var type = noticeForm.querySelector('#type');
+var price = noticeForm.querySelector('#price');
+var roomNumber = noticeForm.querySelector('#room_number');
+var capacity = noticeForm.querySelector('#capacity');
+var formSubmit = noticeForm.querySelector('.form__submit');
+
+timein.addEventListener('change', function () {
+  timeout.value = timein.value;
+});
+
+timeout.addEventListener('change', function () {
+  timein.value = timeout.value;
+});
+
+type.addEventListener('change', function () {
+  if (type.value === 'flat') {
+    price.value = 1000;
+  } else if (type.value === 'bungalo') {
+    price.value = 0;
+  } else if (type.value === 'house') {
+    price.value = 5000;
+  } else if (type.value === 'palace') {
+    price.value = 10000;
+  }
+});
+
+roomNumber.addEventListener('change', function () {
+  if (roomNumber.value === '1') {
+    capacity.value = '1';
+  } else if (roomNumber.value === '2') {
+    capacity.value = '2';
+  } else if (roomNumber.value === '3') {
+    capacity.value = '3';
+  } else if (roomNumber.value === '100') {
+    capacity.value = '0';
+  }
+});
+/**
+formSubmit.addEventListener('click', function () {
+  // checkValidity();
+});
+
+formSubmit.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === KEYCODS.enter) {
+  // checkValidity();
+  }
+});**/
