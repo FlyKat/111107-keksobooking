@@ -158,12 +158,12 @@ function getPin(ad) {
   pin.className = 'pin';
   pin.style.left = ad.location.x - pinWidth / 2 + 'px';
   pin.style.top = ad.location.y - pinHeight + 'px';
+  pin.tabIndex = 0;
 
   pinImg.className = 'rounded';
   pinImg.width = 40;
   pinImg.height = 40;
   pinImg.src = ad.author.avatar;
-  pinImg.tabIndex = 0;
 
   pin.appendChild(pinImg);
 
@@ -293,6 +293,7 @@ pinMap.addEventListener('click', function (evt) {
 pinMap.addEventListener('keydown', function (evt) {
   if (evt.keyCode === KEYCODS.enter) {
     openPopup();
+    addClass(evt.target, 'pin--active');
   }
 });
 
