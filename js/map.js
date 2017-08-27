@@ -40,7 +40,7 @@ var FEATURES = [
 
 var AVATARS_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8];
 
-var RENT_OFFERS_COUNT = 8;
+var ADS_COUNT = 8;
 
 var PRICE = {
   min: 1000,
@@ -104,18 +104,18 @@ function shuffle(arr) {
  *Возвращает массив объявлений
  * @return {[array]}
  */
-function getRentOffers() {
-  var rentOffers = [];
+function getAds() {
+  var ads = [];
   var avatarsNumbers = shuffle(AVATARS_NUMBERS);
   var titles = shuffle(TITLES);
   var features = shuffle(FEATURES).slice(0, getRandomIntInRange(1, FEATURES.length));
 
-  for (var i = 0; i < RENT_OFFERS_COUNT; i++) {
+  for (var i = 0; i < ADS_COUNT; i++) {
     var locationX = getRandomIntInRange(LOCATION.x[0], LOCATION.x[1]);
     var locationY = getRandomIntInRange(LOCATION.y[0], LOCATION.y[1]);
 
 
-    rentOffers.push({
+    ads.push({
       author: {
         avatar: 'img/avatars/user0' + avatarsNumbers[i] + '.png'
       },
@@ -141,28 +141,29 @@ function getRentOffers() {
     });
   }
 
-  return rentOffers;
+  return ads;
 }
 
 /**
  * Создает пин
- * @param  {[obj]} rentOffer
+ * @param  {[obj]} ad
  * @return {[type]} DOM-элемент
  */
-function getPin(rentOffer) {
+function getPin(ad) {
   var pin = document.createElement('div');
   var pinImg = document.createElement('img');
   var pinWidth = 56;
   var pinHeight = 75;
 
   pin.className = 'pin';
-  pin.style.left = rentOffer.location.x - pinWidth / 2 + 'px';
-  pin.style.top = rentOffer.location.y - pinHeight + 'px';
+  pin.style.left = ad.location.x - pinWidth / 2 + 'px';
+  pin.style.top = ad.location.y - pinHeight + 'px';
 
   pinImg.className = 'rounded';
   pinImg.width = 40;
   pinImg.height = 40;
-  pinImg.src = rentOffer.author.avatar;
+  pinImg.src = ad.author.avatar;
+  pinImg.tabIndex = 0;
 
   pin.appendChild(pinImg);
 
@@ -172,13 +173,13 @@ function getPin(rentOffer) {
 
 /**
  * Cоздает пины в DOM
- * @param  {[array]} rentOffers
+ * @param  {[array]} ads
  */
-function renderPins(rentOffers) {
+function renderPins(ads) {
   var fragment = document.createDocumentFragment();
 
-  rentOffers.forEach(function (rentOffer) {
-    fragment.appendChild(getPin(rentOffer));
+  ads.forEach(function (ad) {
+    fragment.appendChild(getPin(ad));
   });
 
   pinMap.appendChild(fragment);
@@ -186,60 +187,59 @@ function renderPins(rentOffers) {
 
 /**
  *На основе шаблона и данных из массива создает объявление
- * @param  {[object]} rentOffer
+ * @param  {[object]} ad
  * @return {[type]} DOM-элемент
  */
-function renderRentOffer(rentOffer) {
-  var lodgeElement = rentOfferTemplate.querySelector('.dialog__panel').cloneNode(true);
+function renderAdCard(ad) {
+  var adCardElement = lodgeTemplate.querySelector('.dialog__panel').cloneNode(true);
 
-  lodgeElement.querySelector('.lodge__title').textContent = rentOffer.offer.title;
-  lodgeElement.querySelector('.lodge__address').textContent = rentOffer.offer.address;
-  lodgeElement.querySelector('.lodge__price').textContent = rentOffer.offer.price + '\u20bd/ночь';
-  lodgeElement.querySelector('.lodge__type').textContent = TYPES_CIRILLIC[rentOffer.offer.type];
+  adCardElement.querySelector('.lodge__title').textContent = ad.offer.title;
+  adCardElement.querySelector('.lodge__address').textContent = ad.offer.address;
+  adCardElement.querySelector('.lodge__price').textContent = ad.offer.price + '\u20bd/ночь';
+  adCardElement.querySelector('.lodge__type').textContent = TYPES_CIRILLIC[ad.offer.type];
 
-  lodgeElement.querySelector('.lodge__rooms-and-guests').textContent = 'Для ' + rentOffer.offer.guests + ' гостей в ' + rentOffer.offer.rooms + ' комнатах';
-  lodgeElement.querySelector('.lodge__checkin-time').textContent = 'Заезд после ' + rentOffer.offer.checkin + ', выезд до ' + rentOffer.offer.checkout;
+  adCardElement.querySelector('.lodge__rooms-and-guests').textContent = 'Для ' + ad.offer.guests + ' гостей в ' + ad.offer.rooms + ' комнатах';
+  adCardElement.querySelector('.lodge__checkin-time').textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
 
-  rentOffer.offer.features.forEach(function (feature) {
+  ad.offer.features.forEach(function (feature) {
     var element = document.createElement('span');
     element.className = 'feature__image feature__image--' + feature;
-    lodgeElement.querySelector('.lodge__features').appendChild(element);
+    adCardElement.querySelector('.lodge__features').appendChild(element);
   });
 
-  lodgeElement.querySelector('.lodge__description').textContent = rentOffer.offer.description;
+  adCardElement.querySelector('.lodge__description').textContent = ad.offer.description;
 
-  avatarImg.src = rentOffer.author.avatar;
+  avatarImg.src = ad.author.avatar;
 
-  return lodgeElement;
+  return adCardElement;
 }
 
-var rentOfferTemplate = document.querySelector('#lodge-template').content;
+var lodgeTemplate = document.querySelector('#lodge-template').content;
 var pinMap = document.querySelector('.tokyo__pin-map');
-//var pinElement= pinMap.querySelectorAll('.pin');
+// var pinElement= pinMap.querySelectorAll('.pin');
 var dialog = document.querySelector('.dialog');
 var dialogPanel = dialog.querySelector('.dialog__panel');
-var dialogClose = dialog.querySelector('dialog__close');
+var dialogClose = dialog.querySelector('.dialog__close');
 var avatar = dialog.querySelector('.dialog__title');
 var avatarImg = avatar.querySelector('img');
 
 var KEYCODS = {
   esc: 27,
   enter: 13
-}
+};
 
 
-function activatePin() {
-  if (!pinElement.classList.contains('pin--active')) {
-    pinElement.classList.add('pin--active');
-  } else {
-    pinElement.remove('pin--active');
+var ads = getAds();
+renderPins(ads);
+
+
+function popupEscPressHandler(evt) {
+  if (evt.keyCode === KEYCODS.esc) {
+    dialog.classList.add('hidden');
   }
 }
 
-
-var rentOffers = getRentOffers();
-renderPins(rentOffers);
-dialog.replaceChild(renderRentOffer(rentOffers[0]), dialogPanel);
+dialog.classList.add('hidden');
 
 
 pinMap.addEventListener('click', function (evt) {
@@ -247,19 +247,45 @@ pinMap.addEventListener('click', function (evt) {
   var pins = pinMap.querySelectorAll('.pin');
 
   pins.forEach(function (pin) {
-    pin.classList.remove('pin--active');
+    if (target.className !== 'pin pin__main' && target.parentNode.className !== 'pin pin__main') {
+      pin.classList.remove('pin--active');
+    }
   });
 
-  if (target.className === 'pin') {
+  if (target.className === 'pin' && target.className !== 'pin__main') {
     target.classList.add('pin--active');
     avatarImg.src = target.firstChild.getAttribute('src');
+    dialog.classList.remove('hidden');
+    document.addEventListener('keydown', popupEscPressHandler);
   }
 
-  if (target.localName === 'img') {
+  if (target.localName === 'img' && target.parentNode.className !== 'pin pin__main') {
     target.parentNode.classList.add('pin--active');
     avatarImg.src = target.src;
-   }
+    dialog.classList.remove('hidden');
+    document.addEventListener('keydown', popupEscPressHandler);
+  }
+});
+
+pinMap.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === KEYCODS.enter) {
+    dialog.classList.remove('hidden');
+    document.addEventListener('keydown', popupEscPressHandler);
+  }
 });
 
 
-//(.pin:not(:first-child)');
+dialogClose.addEventListener('click', function () {
+  dialog.classList.add('hidden');
+  // pin.classList.remove('pin--active');
+});
+
+dialogClose.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === KEYCODS.enter) {
+    dialog.classList.add('hidden');
+    // pin.classList.remove('pin--active');
+  }
+});
+
+
+dialog.replaceChild(renderAdCard(ads[0]), dialogPanel);
