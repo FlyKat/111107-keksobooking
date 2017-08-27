@@ -291,9 +291,13 @@ pinMap.addEventListener('click', function (evt) {
 });
 
 pinMap.addEventListener('keydown', function (evt) {
+  var target = evt.target;
+
   if (evt.keyCode === KEYCODS.enter) {
-    openPopup();
+    deactivatePins(pins);
     addClass(evt.target, 'pin--active');
+    getSrc(target.firstChild);
+    openPopup();
   }
 });
 
