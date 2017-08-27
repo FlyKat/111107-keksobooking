@@ -230,6 +230,7 @@ var KEYCODS = {
 
 var ads = getAds();
 renderPins(ads);
+var pins = pinMap.querySelectorAll('.pin');
 
 function removeClass(element, nameOfClass) {
   element.classList.remove(nameOfClass);
@@ -247,6 +248,7 @@ function getSrc(element) {
 function popupEscPressHandler(evt) {
   if (evt.keyCode === KEYCODS.esc) {
     addClass(dialog, 'hidden');
+    deactivatePins(pins);
   }
 }
 
@@ -267,7 +269,6 @@ function deactivatePins(pins) {
 }
 
 closePopup();
-var pins = pinMap.querySelectorAll('.pin');
 
 pinMap.addEventListener('click', function (evt) {
   var target = evt.target;
@@ -306,6 +307,5 @@ dialogClose.addEventListener('keydown', function (evt) {
     deactivatePins(pins);
   }
 });
-
 
 dialog.replaceChild(renderAdCard(ads[0]), dialogPanel);
