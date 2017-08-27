@@ -216,7 +216,6 @@ function renderAdCard(ad) {
 
 var lodgeTemplate = document.querySelector('#lodge-template').content;
 var pinMap = document.querySelector('.tokyo__pin-map');
-// var pinElement= pinMap.querySelectorAll('.pin');
 var dialog = document.querySelector('.dialog');
 var dialogPanel = dialog.querySelector('.dialog__panel');
 var dialogClose = dialog.querySelector('.dialog__close');
@@ -232,58 +231,79 @@ var KEYCODS = {
 var ads = getAds();
 renderPins(ads);
 
+function removeClass(element, nameOfClass) {
+  element.classList.remove(nameOfClass);
+}
+
+function addClass(element, nameOfClass) {
+  element.classList.add(nameOfClass);
+}
+
+function getSrc(element) {
+  avatarImg.src = element.src;
+}
+
 
 function popupEscPressHandler(evt) {
   if (evt.keyCode === KEYCODS.esc) {
-    dialog.classList.add('hidden');
+    addClass(dialog, 'hidden');
   }
 }
 
-dialog.classList.add('hidden');
+function openPopup() {
+  removeClass(dialog, 'hidden');
+  document.addEventListener('keydown', popupEscPressHandler);
+}
 
+function closePopup() {
+  addClass(dialog, 'hidden');
+  document.removeEventListener('keydown', popupEscPressHandler);
+}
+
+function deactivatePins(pins) {
+  pins.forEach(function (pin) {
+    removeClass(pin, 'pin--active');
+  });
+}
+
+closePopup();
+var pins = pinMap.querySelectorAll('.pin');
 
 pinMap.addEventListener('click', function (evt) {
   var target = evt.target;
-  var pins = pinMap.querySelectorAll('.pin');
 
-  pins.forEach(function (pin) {
-    if (target.className !== 'pin pin__main' && target.parentNode.className !== 'pin pin__main') {
-      pin.classList.remove('pin--active');
-    }
-  });
+  if (target.className !== 'pin pin__main' && target.parentNode.className !== 'pin pin__main') {
+    deactivatePins(pins);
+  }
 
   if (target.className === 'pin' && target.className !== 'pin__main') {
-    target.classList.add('pin--active');
-    avatarImg.src = target.firstChild.getAttribute('src');
-    dialog.classList.remove('hidden');
-    document.addEventListener('keydown', popupEscPressHandler);
+    addClass(target, 'pin--active');
+    getSrc(target.firstChild);
+    openPopup();
   }
 
   if (target.localName === 'img' && target.parentNode.className !== 'pin pin__main') {
-    target.parentNode.classList.add('pin--active');
-    avatarImg.src = target.src;
-    dialog.classList.remove('hidden');
-    document.addEventListener('keydown', popupEscPressHandler);
+    addClass(target.parentNode, 'pin--active');
+    getSrc(target);
+    openPopup();
   }
 });
 
 pinMap.addEventListener('keydown', function (evt) {
   if (evt.keyCode === KEYCODS.enter) {
-    dialog.classList.remove('hidden');
-    document.addEventListener('keydown', popupEscPressHandler);
+    openPopup();
   }
 });
 
-
 dialogClose.addEventListener('click', function () {
-  dialog.classList.add('hidden');
-  // pin.classList.remove('pin--active');
+  closePopup();
+  deactivatePins(pins);
 });
 
 dialogClose.addEventListener('keydown', function (evt) {
   if (evt.keyCode === KEYCODS.enter) {
-    dialog.classList.add('hidden');
-    // pin.classList.remove('pin--active');
+    closePopup();
+    deactivatePins(pins);
   }
 });
 
