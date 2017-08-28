@@ -347,14 +347,24 @@ type.addEventListener('change', function () {
 roomNumber.addEventListener('change', function () {
   if (roomNumber.value === '1') {
     capacity.value = '1';
+    capacity.options[0].disabled = true;
+    capacity.options[1].disabled = true;
+    capacity.options[3].disabled = true;
   } else if (roomNumber.value === '2') {
     capacity.value = '2';
+    capacity.options[0].disabled = true;
+    capacity.options[3].disabled = true;
   } else if (roomNumber.value === '3') {
     capacity.value = '3';
+    capacity.options[3].disabled = true;
   } else if (roomNumber.value === '100') {
     capacity.value = '0';
+    capacity.options[0].disabled = true;
+    capacity.options[1].disabled = true;
+    capacity.options[2].disabled = true;
   }
 });
+
 /**
 formSubmit.addEventListener('click', function () {
   // checkValidity();
