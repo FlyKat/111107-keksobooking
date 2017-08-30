@@ -270,6 +270,8 @@ function deactivatePins(pins) {
 
 closePopup();
 
+// function
+
 pinMap.addEventListener('click', function (evt) {
   var target = evt.target;
 
@@ -316,6 +318,8 @@ dialogClose.addEventListener('keydown', function (evt) {
 dialog.replaceChild(renderAdCard(ads[0]), dialogPanel);
 
 var noticeForm = document.querySelector('.notice__form');
+var title = noticeForm.querySelector('#title');
+var address = noticeForm.querySelector('#address');
 var timein = noticeForm.querySelector('#timein');
 var timeout = noticeForm.querySelector('#timeout');
 var type = noticeForm.querySelector('#type');
@@ -324,27 +328,32 @@ var roomNumber = noticeForm.querySelector('#room_number');
 var capacity = noticeForm.querySelector('#capacity');
 var formSubmit = noticeForm.querySelector('.form__submit');
 
-timein.addEventListener('change', function () {
+function timeinChangeHandler() {
   timeout.value = timein.value;
-});
+}
 
-timeout.addEventListener('change', function () {
+function timeoutChangeHandler() {
   timein.value = timeout.value;
-});
+}
 
-type.addEventListener('change', function () {
+function typePriceChangeHandler() {
   if (type.value === 'flat') {
-    price.value = 1000;
+    price.min = 1000;
   } else if (type.value === 'bungalo') {
-    price.value = 0;
+    price.min = 0;
   } else if (type.value === 'house') {
-    price.value = 5000;
+    price.min = 5000;
   } else if (type.value === 'palace') {
-    price.value = 10000;
+    price.min = 10000;
   }
-});
+  price.value = price.min;
+}
 
-roomNumber.addEventListener('change', function () {
+function roomNumberCapacityChangeHandler() {
+  for (var i = 0; i < capacity.options.length; i++) {
+    capacity.options[i].disabled = false;
+  }
+
   if (roomNumber.value === '1') {
     capacity.value = '1';
     capacity.options[0].disabled = true;
@@ -363,15 +372,22 @@ roomNumber.addEventListener('change', function () {
     capacity.options[1].disabled = true;
     capacity.options[2].disabled = true;
   }
-});
+}
 
-/**
-formSubmit.addEventListener('click', function () {
-  // checkValidity();
-});
-
-formSubmit.addEventListener('keydown', function (evt) {
-  if (evt.keyCode === KEYCODS.enter) {
-  // checkValidity();
+function checkFieldValidity(field) {
+  if (field.checkValidity() === false) {
+    field.style.border = '1px solid red';
   }
-});**/
+}
+
+function checkValidity() {
+  checkFieldValidity(title);
+  checkFieldValidity(address);
+  checkFieldValidity(price);
+}
+
+timein.addEventListener('change', timeinChangeHandler);
+timeout.addEventListener('change', timeoutChangeHandler);
+type.addEventListener('change', typePriceChangeHandler);
+roomNumber.addEventListener('change', roomNumberCapacityChangeHandler);
+formSubmit.addEventListener('click', checkValidity);
