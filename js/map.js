@@ -40,7 +40,7 @@ var FEATURES = [
 
 var AVATARS_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8];
 
-var RENT_OFFERS_COUNT = 8;
+var ADS_COUNT = 8;
 
 var PRICE = {
   min: 1000,
@@ -60,6 +60,11 @@ var GUESTS = {
 var LOCATION = {
   x: [300, 900],
   y: [100, 500]
+};
+
+var KEYCODS = {
+  esc: 27,
+  enter: 13
 };
 
 /**
@@ -104,18 +109,18 @@ function shuffle(arr) {
  *Возвращает массив объявлений
  * @return {[array]}
  */
-function getRentOffers() {
-  var rentOffers = [];
+function getAds() {
+  var ads = [];
   var avatarsNumbers = shuffle(AVATARS_NUMBERS);
   var titles = shuffle(TITLES);
-  var features = shuffle(FEATURES).slice(0, getRandomIntInRange(1, FEATURES.length));
 
-  for (var i = 0; i < RENT_OFFERS_COUNT; i++) {
+
+  for (var i = 0; i < ADS_COUNT; i++) {
     var locationX = getRandomIntInRange(LOCATION.x[0], LOCATION.x[1]);
     var locationY = getRandomIntInRange(LOCATION.y[0], LOCATION.y[1]);
+    var features = shuffle(FEATURES).slice(0, getRandomIntInRange(1, FEATURES.length));
 
-
-    rentOffers.push({
+    ads.push({
       author: {
         avatar: 'img/avatars/user0' + avatarsNumbers[i] + '.png'
       },
@@ -141,28 +146,29 @@ function getRentOffers() {
     });
   }
 
-  return rentOffers;
+  return ads;
 }
 
 /**
  * Создает пин
- * @param  {[obj]} rentOffer
+ * @param  {[obj]} ad
  * @return {[type]} DOM-элемент
  */
-function getPin(rentOffer) {
+function getPin(ad) {
   var pin = document.createElement('div');
   var pinImg = document.createElement('img');
   var pinWidth = 56;
   var pinHeight = 75;
 
   pin.className = 'pin';
-  pin.style.left = rentOffer.location.x - pinWidth / 2 + 'px';
-  pin.style.top = rentOffer.location.y - pinHeight + 'px';
+  pin.style.left = ad.location.x - pinWidth / 2 + 'px';
+  pin.style.top = ad.location.y - pinHeight + 'px';
+  pin.tabIndex = 0;
 
   pinImg.className = 'rounded';
   pinImg.width = 40;
   pinImg.height = 40;
-  pinImg.src = rentOffer.author.avatar;
+  pinImg.src = ad.author.avatar;
 
   pin.appendChild(pinImg);
 
@@ -172,54 +178,237 @@ function getPin(rentOffer) {
 
 /**
  * Cоздает пины в DOM
- * @param  {[array]} rentOffers
+ * @param  {[array]} ads
  */
-function renderPins(rentOffers) {
+function renderPins(ads) {
   var fragment = document.createDocumentFragment();
 
-  rentOffers.forEach(function (rentOffer) {
-    fragment.appendChild(getPin(rentOffer));
+  ads.forEach(function (ad) {
+    fragment.appendChild(getPin(ad));
   });
 
-  pinsList.appendChild(fragment);
+  pinMap.appendChild(fragment);
 }
 
 /**
  *На основе шаблона и данных из массива создает объявление
- * @param  {[object]} rentOffer
+ * @param  {[object]} ad
  * @return {[type]} DOM-элемент
  */
-function renderRentOffer(rentOffer) {
-  var lodgeElement = rentOfferTemplate.querySelector('.dialog__panel').cloneNode(true);
+function getAdCard(ad) {
+  var adCard = lodgeTemplate.querySelector('.dialog__panel').cloneNode(true);
 
-  lodgeElement.querySelector('.lodge__title').textContent = rentOffer.offer.title;
-  lodgeElement.querySelector('.lodge__address').textContent = rentOffer.offer.address;
-  lodgeElement.querySelector('.lodge__price').textContent = rentOffer.offer.price + '\u20bd/ночь';
-  lodgeElement.querySelector('.lodge__type').textContent = TYPES_CIRILLIC[rentOffer.offer.type];
+  adCard.querySelector('.lodge__title').textContent = ad.offer.title;
+  adCard.querySelector('.lodge__address').textContent = ad.offer.address;
+  adCard.querySelector('.lodge__price').textContent = ad.offer.price + '\u20bd/ночь';
+  adCard.querySelector('.lodge__type').textContent = TYPES_CIRILLIC[ad.offer.type];
 
-  lodgeElement.querySelector('.lodge__rooms-and-guests').textContent = 'Для ' + rentOffer.offer.guests + ' гостей в ' + rentOffer.offer.rooms + ' комнатах';
-  lodgeElement.querySelector('.lodge__checkin-time').textContent = 'Заезд после ' + rentOffer.offer.checkin + ', выезд до ' + rentOffer.offer.checkout;
+  adCard.querySelector('.lodge__rooms-and-guests').textContent = 'Для ' + ad.offer.guests + ' гостей в ' + ad.offer.rooms + ' комнатах';
+  adCard.querySelector('.lodge__checkin-time').textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
 
-  rentOffer.offer.features.forEach(function (feature) {
+  ad.offer.features.forEach(function (feature) {
     var element = document.createElement('span');
     element.className = 'feature__image feature__image--' + feature;
-    lodgeElement.querySelector('.lodge__features').appendChild(element);
+    adCard.querySelector('.lodge__features').appendChild(element);
   });
 
-  lodgeElement.querySelector('.lodge__description').textContent = rentOffer.offer.description;
+  adCard.querySelector('.lodge__description').textContent = ad.offer.description;
 
-  avatarImg.src = rentOffer.author.avatar;
 
-  return lodgeElement;
+  return adCard;
 }
 
-var rentOfferTemplate = document.querySelector('#lodge-template').content;
-var pinsList = document.querySelector('.tokyo__pin-map');
+var lodgeTemplate = document.querySelector('#lodge-template').content;
+var pinMap = document.querySelector('.tokyo__pin-map');
 var dialog = document.querySelector('.dialog');
-var dialogPanel = dialog.querySelector('.dialog__panel');
+var dialogClose = dialog.querySelector('.dialog__close');
 var avatar = dialog.querySelector('.dialog__title');
 var avatarImg = avatar.querySelector('img');
 
-var rentOffers = getRentOffers();
-renderPins(rentOffers);
-dialog.replaceChild(renderRentOffer(rentOffers[0]), dialogPanel);
+
+var ads = getAds();
+renderPins(ads);
+
+function removeClass(element, nameOfClass) {
+  element.classList.remove(nameOfClass);
+}
+
+function addClass(element, nameOfClass) {
+  element.classList.add(nameOfClass);
+}
+
+function popupEscPressHandler(evt) {
+  if (evt.keyCode === KEYCODS.esc) {
+    addClass(dialog, 'hidden');
+    deactivatePin();
+  }
+}
+
+function openPopup() {
+  removeClass(dialog, 'hidden');
+  document.addEventListener('keydown', popupEscPressHandler);
+}
+
+function closePopup() {
+  addClass(dialog, 'hidden');
+  document.removeEventListener('keydown', popupEscPressHandler);
+}
+
+function deactivatePin() {
+  var pinActive = pinMap.querySelector('.pin--active');
+
+  if (pinActive) {
+    removeClass(pinActive, 'pin--active');
+  }
+}
+
+function getAdIndex(path) {
+  for (var i = 0; i < ads.length; i++) {
+    if (path === ads[i].author.avatar) {
+      return i;
+    }
+  }
+  return i;
+}
+
+function renderAdCard(index) {
+  var dialogPanel = dialog.querySelector('.dialog__panel');
+  dialog.replaceChild(getAdCard(ads[index]), dialogPanel);
+}
+
+function renderAdCardAvatar(index) {
+  avatarImg.src = ads[index].author.avatar;
+}
+
+closePopup();
+
+function showDialog(evt) {
+  var pinMain = pinMap.querySelector('.pin__main');
+
+  if (evt.target === pinMain || evt.target.parentNode === pinMain) {
+    return;
+  }
+
+  var pin;
+  var pinImg;
+
+  if (evt.target.classList.contains('pin')) {
+    pin = evt.target;
+    pinImg = evt.target.firstChild;
+  } else {
+    pin = evt.target.parentNode;
+    pinImg = evt.target;
+  }
+
+  var src = pinImg.getAttribute('src');
+  var index = getAdIndex(src);
+
+  deactivatePin();
+  addClass(pin, 'pin--active');
+  renderAdCard(index);
+  renderAdCardAvatar(index);
+  openPopup();
+}
+
+function pinMapClickHandler(evt) {
+  showDialog(evt);
+}
+
+function pinMapPressHandler(evt) {
+  if (evt.keyCode === KEYCODS.enter) {
+    showDialog(evt);
+  }
+}
+
+function closeDialogClickHandler() {
+  closePopup();
+  deactivatePin();
+}
+
+function closeDialogPressHandler(evt) {
+  if (evt.keyCode === KEYCODS.enter) {
+    closePopup();
+    deactivatePin();
+  }
+}
+
+pinMap.addEventListener('click', pinMapClickHandler);
+pinMap.addEventListener('keydown', pinMapPressHandler);
+dialogClose.addEventListener('click', closeDialogClickHandler);
+dialogClose.addEventListener('keydown', closeDialogPressHandler);
+
+
+var noticeForm = document.querySelector('.notice__form');
+var title = noticeForm.querySelector('#title');
+var address = noticeForm.querySelector('#address');
+var timein = noticeForm.querySelector('#timein');
+var timeout = noticeForm.querySelector('#timeout');
+var type = noticeForm.querySelector('#type');
+var price = noticeForm.querySelector('#price');
+var roomNumber = noticeForm.querySelector('#room_number');
+var capacity = noticeForm.querySelector('#capacity');
+var formSubmit = noticeForm.querySelector('.form__submit');
+
+function timeinChangeHandler() {
+  timeout.value = timein.value;
+}
+
+function timeoutChangeHandler() {
+  timein.value = timeout.value;
+}
+
+function typePriceChangeHandler() {
+  if (type.value === 'flat') {
+    price.min = 1000;
+  } else if (type.value === 'bungalo') {
+    price.min = 0;
+  } else if (type.value === 'house') {
+    price.min = 5000;
+  } else if (type.value === 'palace') {
+    price.min = 10000;
+  }
+  price.value = price.min;
+}
+
+function roomNumberCapacityChangeHandler() {
+  for (var i = 0; i < capacity.options.length; i++) {
+    capacity.options[i].disabled = false;
+  }
+
+  if (roomNumber.value === '1') {
+    capacity.value = '1';
+    capacity.options[0].disabled = true;
+    capacity.options[1].disabled = true;
+    capacity.options[3].disabled = true;
+  } else if (roomNumber.value === '2') {
+    capacity.value = '2';
+    capacity.options[0].disabled = true;
+    capacity.options[3].disabled = true;
+  } else if (roomNumber.value === '3') {
+    capacity.value = '3';
+    capacity.options[3].disabled = true;
+  } else if (roomNumber.value === '100') {
+    capacity.value = '0';
+    capacity.options[0].disabled = true;
+    capacity.options[1].disabled = true;
+    capacity.options[2].disabled = true;
+  }
+}
+
+function checkFieldValidity(field) {
+  if (field.checkValidity() === false) {
+    field.style.border = '1px solid red';
+  }
+}
+
+function checkValidity() {
+  checkFieldValidity(title);
+  checkFieldValidity(address);
+  checkFieldValidity(price);
+}
+
+timein.addEventListener('change', timeinChangeHandler);
+timeout.addEventListener('change', timeoutChangeHandler);
+type.addEventListener('change', typePriceChangeHandler);
+roomNumber.addEventListener('change', roomNumberCapacityChangeHandler);
+formSubmit.addEventListener('click', checkValidity);
