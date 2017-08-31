@@ -337,6 +337,7 @@ pinMap.addEventListener('keydown', pinMapPressHandler);
 dialogClose.addEventListener('click', closeDialogClickHandler);
 dialogClose.addEventListener('keydown', closeDialogPressHandler);
 
+// form
 
 var noticeForm = document.querySelector('.notice__form');
 var title = noticeForm.querySelector('#title');
