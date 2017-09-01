@@ -78,7 +78,9 @@
   }
 
   function pinMapPressHandler(evt) {
-    window.util.isEnterEvent(evt, showDialog(evt));
+    window.util.isEnterEvent(evt, function () {
+      showDialog(evt);
+    });
   }
 
   function closeDialogClickHandler() {
