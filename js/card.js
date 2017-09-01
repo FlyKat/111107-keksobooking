@@ -41,14 +41,18 @@
     return adCard;
   }
 
+  function renderAdCard(index) {
+    var dialogPanel = dialog.querySelector('.dialog__panel');
+    dialog.replaceChild(getAdCard(ads[index]), dialogPanel);
+  }
+
+  function renderAdCardAvatar(index) {
+    avatarImg.src = ads[index].author.avatar;
+  }
+
   window.card = {
-    renderAdCard: function (index) {
-      var dialogPanel = dialog.querySelector('.dialog__panel');
-      dialog.replaceChild(getAdCard(ads[index]), dialogPanel);
-    },
-    renderAdCardAvatar: function (index) {
-      avatarImg.src = ads[index].author.avatar;
-    },
+    renderAdCard: renderAdCard,
+    renderAdCardAvatar: renderAdCardAvatar,
     dialog: dialog
   };
 })();

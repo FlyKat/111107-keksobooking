@@ -7,7 +7,10 @@
   var ads = window.data.ads;
   var adsLength = ads.length;
 
-  window.pin.renderPins(ads);
+  function init() {
+    closePopup();
+    window.pin.renderPins(ads);
+  }
 
   function popupEscPressHandler(evt) {
     window.util.isEscEvent(evt, function () {
@@ -42,8 +45,6 @@
     }
     return i;
   }
-
-  closePopup();
 
   function showDialog(evt) {
     var pinMain = pinMap.querySelector('.pin__main');
@@ -94,6 +95,8 @@
       deactivatePin();
     });
   }
+
+  init();
 
   pinMap.addEventListener('click', pinMapClickHandler);
   pinMap.addEventListener('keydown', pinMapPressHandler);

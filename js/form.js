@@ -12,6 +12,10 @@
   var capacity = noticeForm.querySelector('#capacity');
   var formSubmit = noticeForm.querySelector('.form__submit');
 
+  function init() {
+    roomNumberCapacityChangeHandler();
+  }
+
   function timeinChangeHandler() {
     timeout.value = timein.value;
   }
@@ -69,6 +73,8 @@
     checkFieldValidity(address);
     checkFieldValidity(price);
   }
+
+  init();
 
   timein.addEventListener('change', timeinChangeHandler);
   timeout.addEventListener('change', timeoutChangeHandler);

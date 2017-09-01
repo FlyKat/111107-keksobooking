@@ -33,16 +33,18 @@
   * Cоздает пины в DOM
   * @param  {array} ads
    */
+  function renderPins(ads) {
+    var fragment = document.createDocumentFragment();
+
+    ads.forEach(function (ad) {
+      fragment.appendChild(getPin(ad));
+    });
+
+    pinMap.appendChild(fragment);
+  }
+
   window.pin = {
-    renderPins: function (ads) {
-      var fragment = document.createDocumentFragment();
-
-      ads.forEach(function (ad) {
-        fragment.appendChild(getPin(ad));
-      });
-
-      pinMap.appendChild(fragment);
-    },
+    renderPins: renderPins,
     pinMap: pinMap
   };
 })();
