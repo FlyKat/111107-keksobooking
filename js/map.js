@@ -1,12 +1,20 @@
 'use strict';
 
 (function () {
+  var MAP = {
+    minX: 263,
+    maxX: 862,
+    minY: 6,
+    maxY: 406
+  }
   var MAP_MIN_X = 263;
   var MAP_MAX_X = 862;
   var MAP_MIN_Y = 6;
   var MAP_MAX_Y = 406;
-  var PIN_MAIN_WIDTH = 76;
-  var PIN_MAIN_HEIGHT = 94;
+  var PIN_MAIN = {
+    width: 76,
+    height: 94
+  }
   var dialog = window.card.dialog;
   var dialogClose = dialog.querySelector('.dialog__close');
   var pinMap = window.pin.pinMap;
@@ -130,16 +138,17 @@
         y: pinMain.offsetTop - shift.y
       };
 
-      if (MAP_MIN_X < pinMainCoords.x && pinMainCoords.x < MAP_MAX_X) {
+      if (MAP.minX < pinMainCoords.x && pinMainCoords.x < MAP.maxX) {
         pinMain.style.left = pinMainCoords.x + 'px';
       }
 
-      if (MAP_MIN_Y < pinMainCoords.y && pinMainCoords.y < MAP_MAX_Y) {
+      if (MAP.minY < pinMainCoords.y && pinMainCoords.y < MAP.maxY) {
         pinMain.style.top = pinMainCoords.y + 'px';
       }
 
       noticeFormAdress.readOnly = true;
-      noticeFormAdress.value = 'x: ' + (pinMainCoords.x + PIN_MAIN_WIDTH / 2) + ', y: ' + (pinMainCoords.y + PIN_MAIN_HEIGHT);
+      noticeFormAdress.value = 'x: ' + (pinMainCoords.x + PIN_MAIN.width / 2) + ', y: ' + (pinMainCoords.y + PIN_MAIN.height);
+      // noticeFormAdress.value =(pinMainCoords.x + PIN_MAIN.width / 2) + ', ' + (pinMainCoords.y + PIN_MAIN.height);
     }
 
     function MouseUpHandler(upEvt) {
@@ -160,4 +169,19 @@
   dialogClose.addEventListener('click', closeDialogClickHandler);
   dialogClose.addEventListener('keydown', closeDialogPressHandler);
   pinMain.addEventListener('mousedown', pinMainMousedownHandler);
+
+
+// Пыталась сделать доп.задание.
+// Не знаю, как запретить ввод чего-то кроме цифр и как сделать, чтобы уже при загрузке страницы в поле были координаты главного пина
+/**  noticeFormAdress.addEventListener('change', function () {
+    var pinMainCoords = noticeFormAdress.value.split(', ');
+
+    if (MAP.minX < pinMainCoords[0] && pinMainCoords[0] < MAP.maxX) {
+        pinMain.style.left = (pinMainCoords[0] - PIN_MAIN.width / 2) + 'px';
+      }
+
+      if (MAP.minY < pinMainCoords[1] && pinMainCoords[1] < MAP.maxY) {
+        pinMain.style.top = (pinMainCoords[1] - PIN_MAIN.height) + 'px';
+      }
+  }); **/
 })();
