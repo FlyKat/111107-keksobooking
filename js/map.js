@@ -6,15 +6,13 @@
     maxX: 862,
     minY: 6,
     maxY: 406
-  }
-  var MAP_MIN_X = 263;
-  var MAP_MAX_X = 862;
-  var MAP_MIN_Y = 6;
-  var MAP_MAX_Y = 406;
+  };
+
   var PIN_MAIN = {
     width: 76,
     height: 94
-  }
+  };
+
   var dialog = window.card.dialog;
   var dialogClose = dialog.querySelector('.dialog__close');
   var pinMap = window.pin.pinMap;

@@ -4,9 +4,8 @@
   var PIN = {
     width: 56,
     height: 75
-  }
-  var PIN_WIDTH = 56;
-  var PIN_HEIGTH = 75;
+  };
+
   var pinMap = document.querySelector('.tokyo__pin-map');
 
   /**
