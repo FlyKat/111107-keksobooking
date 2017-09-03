@@ -1,12 +1,12 @@
 'use strict';
 
 (function () {
-  var MAP_MIN_X = 300;
-  var MAP_MAX_X = 900;
-  var MAP_MIN_Y = 100;
-  var MAP_MAX_Y = 500;
+  var MAP_MIN_X = 263;
+  var MAP_MAX_X = 862;
+  var MAP_MIN_Y = 6;
+  var MAP_MAX_Y = 406;
   var PIN_MAIN_WIDTH = 76;
-  var PIN_MAIN_HEIGTH = 94;
+  var PIN_MAIN_HEIGHT = 94;
   var dialog = window.card.dialog;
   var dialogClose = dialog.querySelector('.dialog__close');
   var pinMap = window.pin.pinMap;
@@ -104,14 +104,7 @@
     });
   }
 
-  init();
-
-  pinMap.addEventListener('click', pinMapClickHandler);
-  pinMap.addEventListener('keydown', pinMapPressHandler);
-  dialogClose.addEventListener('click', closeDialogClickHandler);
-  dialogClose.addEventListener('keydown', closeDialogPressHandler);
-
-  pinMain.addEventListener('mousedown', function (evt) {
+  function pinMainMousedownHandler(evt) {
     evt.preventDefault();
 
     var startCoords = {
@@ -132,11 +125,21 @@
         y: moveEvt.clientY
       };
 
-      pinMain.style.left = pinMain.offsetLeft - shift.x + 'px';
-      pinMain.style.top = pinMain.offsetTop - shift.y + 'px'
+      var pinMainCoords = {
+        x: pinMain.offsetLeft - shift.x,
+        y: pinMain.offsetTop - shift.y
+      };
+
+      if (MAP_MIN_X < pinMainCoords.x && pinMainCoords.x < MAP_MAX_X) {
+        pinMain.style.left = pinMainCoords.x + 'px';
+      }
+
+      if (MAP_MIN_Y < pinMainCoords.y && pinMainCoords.y < MAP_MAX_Y) {
+        pinMain.style.top = pinMainCoords.y + 'px';
+      }
 
       noticeFormAdress.readOnly = true;
-      noticeFormAdress.value ='x: ' + (pinMain.offsetLeft - shift.x + PIN_MAIN_WIDTH / 2) + ', ' + 'y: ' + (pinMain.offsetTop - shift.y + PIN_MAIN_HEIGTH);
+      noticeFormAdress.value = 'x: ' + (pinMainCoords.x + PIN_MAIN_WIDTH / 2) + ', y: ' + (pinMainCoords.y + PIN_MAIN_HEIGHT);
     }
 
     function MouseUpHandler(upEvt) {
@@ -148,5 +151,13 @@
 
     document.addEventListener('mousemove', MouseMoveHandler);
     document.addEventListener('mouseup', MouseUpHandler);
-  });
+  }
+
+  init();
+
+  pinMap.addEventListener('click', pinMapClickHandler);
+  pinMap.addEventListener('keydown', pinMapPressHandler);
+  dialogClose.addEventListener('click', closeDialogClickHandler);
+  dialogClose.addEventListener('keydown', closeDialogPressHandler);
+  pinMain.addEventListener('mousedown', pinMainMousedownHandler);
 })();
