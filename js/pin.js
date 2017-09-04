@@ -1,6 +1,11 @@
 'use strict';
 
 (function () {
+  var PIN = {
+    width: 56,
+    height: 75
+  };
+
   var pinMap = document.querySelector('.tokyo__pin-map');
 
   /**
@@ -11,12 +16,10 @@
   function getPin(ad) {
     var pin = document.createElement('div');
     var pinImg = document.createElement('img');
-    var pinWidth = 56;
-    var pinHeight = 75;
 
     pin.className = 'pin';
-    pin.style.left = ad.location.x - pinWidth / 2 + 'px';
-    pin.style.top = ad.location.y - pinHeight + 'px';
+    pin.style.left = ad.location.x - PIN.width / 2 + 'px';
+    pin.style.top = ad.location.y - PIN.height + 'px';
     pin.tabIndex = 0;
 
     pinImg.className = 'rounded';
