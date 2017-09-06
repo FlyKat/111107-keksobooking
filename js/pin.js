@@ -6,8 +6,6 @@
     height: 75
   };
 
-  var pinMap = document.querySelector('.tokyo__pin-map');
-
   /**
    * Создает пин
    * @param  {[obj]} ad
@@ -37,6 +35,7 @@
   * @param  {array} ads
    */
   function renderPins(ads) {
+    var pinMap = document.querySelector('.tokyo__pin-map');
     var fragment = document.createDocumentFragment();
 
     ads.forEach(function (ad) {
@@ -48,6 +47,5 @@
 
   window.pin = {
     renderPins: renderPins,
-    pinMap: pinMap
   };
 })();

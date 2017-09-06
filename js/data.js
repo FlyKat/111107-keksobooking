@@ -1,10 +1,6 @@
 'use strict';
 
 (function () {
-  var shuffle = window.util.shuffle;
-  var getRandomIntInRange = window.util.getRandomIntInRange;
-  var getRandomElement = window.util.getRandomElement;
-
   var TITLES = [
     'Большая уютная квартира',
     'Маленькая неуютная квартира',
@@ -67,6 +63,9 @@
   */
   function getAds() {
     var ads = [];
+    var shuffle = window.util.shuffle;
+    var getRandomIntInRange = window.util.getRandomIntInRange;
+    var getRandomElement = window.util.getRandomElement;
     var avatarsNumbers = shuffle(AVATARS_NUMBERS);
     var titles = shuffle(TITLES);
 
