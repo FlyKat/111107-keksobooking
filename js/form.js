@@ -59,7 +59,7 @@
 
   function syncWithOptions(field, values) {
     for (var i = 0; i < field.options.length; i++) {
-      (values.indexOf(field.options[i].value) === -1) ? field.options[i].disabled = true : field.options[i].disabled = false; //почему ругается тревис?
+      field.options[i].disabled = (values.indexOf(field.options[i].value) === -1) ? true : false;
       field.value = values[0];
     }
   }
