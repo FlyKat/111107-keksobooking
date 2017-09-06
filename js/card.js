@@ -7,10 +7,7 @@
     bungalo: 'Бунгало'
   };
 
-  var lodgeTemplate = document.querySelector('#lodge-template').content;
   var dialog = document.querySelector('.dialog');
-  var avatar = dialog.querySelector('.dialog__title');
-  var avatarImg = avatar.querySelector('img');
   var ads = window.data.ads;
 
   /**
@@ -19,6 +16,7 @@
    * @return {[type]} DOM-элемент
    */
   function getAdCard(ad) {
+    var lodgeTemplate = document.querySelector('#lodge-template').content;
     var adCard = lodgeTemplate.querySelector('.dialog__panel').cloneNode(true);
 
     adCard.querySelector('.lodge__title').textContent = ad.offer.title;
@@ -43,16 +41,19 @@
 
   function renderAdCard(index) {
     var dialogPanel = dialog.querySelector('.dialog__panel');
+
     dialog.replaceChild(getAdCard(ads[index]), dialogPanel);
   }
 
   function renderAdCardAvatar(index) {
+    var avatar = dialog.querySelector('.dialog__title');
+    var avatarImg = avatar.querySelector('img');
+
     avatarImg.src = ads[index].author.avatar;
   }
 
   window.card = {
     renderAdCard: renderAdCard,
     renderAdCardAvatar: renderAdCardAvatar,
-    dialog: dialog
   };
 })();

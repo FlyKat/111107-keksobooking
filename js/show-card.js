@@ -1,9 +1,6 @@
 'use strict';
 
 (function () {
-  var pinMap = document.querySelector('.tokyo__pin-map');
-  var pinMain = pinMap.querySelector('.pin__main');
-
   function getAdIndex(path) {
     var adsLength = window.data.ads.length;
     for (var i = 0; i < adsLength; i++) {
@@ -15,6 +12,9 @@
   }
 
   function showCard(evt) {
+    var pinMap = document.querySelector('.tokyo__pin-map');
+    var pinMain = pinMap.querySelector('.pin__main');
+
     if (evt.target === pinMain || evt.target.parentNode === pinMain) {
       return;
     }

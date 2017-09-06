@@ -2,10 +2,10 @@
 
 (function () {
   var MAP = {
-    minX: 263,
-    maxX: 862,
-    minY: 6,
-    maxY: 406
+    minX: 0,
+    maxX: 1200,
+    minY: 100,
+    maxY: 550
   };
 
   var PIN_MAIN = {
@@ -13,11 +13,10 @@
     height: 94
   };
 
-  var dialog = window.card.dialog;
+  var dialog = document.querySelector('.dialog');
   var dialogClose = dialog.querySelector('.dialog__close');
-  var pinMap = window.pin.pinMap;
   var ads = window.data.ads;
-  var adsLength = ads.length;
+  var pinMap = document.querySelector('.tokyo__pin-map');
   var pinMain = pinMap.querySelector('.pin__main');
 
   var noticeForm = document.querySelector('.notice__form');
@@ -53,48 +52,13 @@
     }
   }
 
-  function getAdIndex(path) {
-    for (var i = 0; i < adsLength; i++) {
-      if (path === ads[i].author.avatar) {
-        return i;
-      }
-    }
-    return i;
-  }
-
-  function showDialog(evt) {
-    if (evt.target === pinMain || evt.target.parentNode === pinMain) {
-      return;
-    }
-
-    var pin;
-    var pinImg;
-
-    if (evt.target.classList.contains('pin')) {
-      pin = evt.target;
-      pinImg = evt.target.firstChild;
-    } else {
-      pin = evt.target.parentNode;
-      pinImg = evt.target;
-    }
-
-    var src = pinImg.getAttribute('src');
-    var index = getAdIndex(src);
-
-    deactivatePin();
-    window.util.addClass(pin, 'pin--active');
-    window.card.renderAdCard(index);
-    window.card.renderAdCardAvatar(index);
-    openPopup();
-  }
-
   function pinMapClickHandler(evt) {
-    showDialog(evt);
+    window.showCard(evt);
   }
 
   function pinMapPressHandler(evt) {
     window.util.isEnterEvent(evt, function () {
-      showDialog(evt);
+      window.showCard(evt);
     });
   }
 
@@ -136,7 +100,7 @@
         y: pinMain.offsetTop - shift.y
       };
 
-      if (MAP.minX < pinMainCoords.x && pinMainCoords.x < MAP.maxX) {
+      if (MAP.minX < pinMainCoords.x && pinMainCoords.x < (MAP.maxX - PIN_MAIN.width)) {
         pinMain.style.left = pinMainCoords.x + 'px';
       }
 
@@ -168,10 +132,7 @@
   dialogClose.addEventListener('keydown', closeDialogPressHandler);
   pinMain.addEventListener('mousedown', pinMainMousedownHandler);
 
-
-// Пыталась сделать доп.задание.
-// Не знаю, как запретить ввод чего-то кроме цифр и как сделать, чтобы уже при загрузке страницы в поле были координаты главного пина
-/**  noticeFormAdress.addEventListener('change', function () {
+  /**  noticeFormAdress.addEventListener('change', function () {
     var pinMainCoords = noticeFormAdress.value.split(', ');
 
     if (MAP.minX < pinMainCoords[0] && pinMainCoords[0] < MAP.maxX) {
@@ -182,4 +143,8 @@
         pinMain.style.top = (pinMainCoords[1] - PIN_MAIN.height) + 'px';
       }
   }); **/
+  window.map = {
+    deactivatePin: deactivatePin,
+    openPopup: openPopup
+  };
 })();
