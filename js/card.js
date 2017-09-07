@@ -8,7 +8,6 @@
   };
 
   var dialog = document.querySelector('.dialog');
-  var ads = window.data.ads;
 
   /**
    *На основе шаблона и данных из массива создает объявление
@@ -42,7 +41,7 @@
   function renderAdCard(index) {
     var dialogPanel = dialog.querySelector('.dialog__panel');
 
-    dialog.replaceChild(getAdCard(ads[index]), dialogPanel);
+    dialog.replaceChild(ads[index], dialogPanel);
   }
 
   function renderAdCardAvatar(index) {

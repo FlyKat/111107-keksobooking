@@ -2,8 +2,8 @@
 
 (function () {
   function getAdIndex(path) {
-    var adsLength = window.data.ads.length;
-    for (var i = 0; i < adsLength; i++) {
+    //var adsLength = window.data.ads.length;
+    for (var i = 0; i < ads.length; i++) {
       if (path === window.data.ads[i].author.avatar) {
         return i;
       }

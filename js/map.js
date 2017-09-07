@@ -15,7 +15,7 @@
 
   var dialog = document.querySelector('.dialog');
   var dialogClose = dialog.querySelector('.dialog__close');
-  var ads = window.data.ads;
+  //var ads = window.data.ads;
   var pinMap = document.querySelector('.tokyo__pin-map');
   var pinMain = pinMap.querySelector('.pin__main');
 
@@ -24,7 +24,28 @@
 
   function init() {
     closePopup();
+     window.backend.load(loadHandler, errorHandler);  // если я правильно поняла то, что должно сразу при загрузке страницы
+  }
+
+  function loadHandler(ads) {
+    window.data.ads = ads;
     window.pin.renderPins(ads);
+  }
+
+  function errorHandler(errorMessage) {
+    var node = document.createElement('div');
+
+    node.style.zIndex = '100';
+    node.style.margin = '0 auto';
+    node.style.textAlign = 'center';
+    node.style.backgroundColor = 'red';
+    node.style.position = 'absolute';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '30px';
+
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
   }
 
   function popupEscPressHandler(evt) {

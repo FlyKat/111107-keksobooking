@@ -105,6 +105,6 @@
   }
 
   window.data = {
-    ads: getAds(),
+    ads: [],
   };
 })();
