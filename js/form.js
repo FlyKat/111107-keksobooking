@@ -82,9 +82,7 @@
   }
 
   function checkFieldValidity(field) {
-    if (field.checkValidity() === false) {
-      field.style.border = '1px solid red';
-    }
+    field.style.border = (field.checkValidity() === false) ? '1px solid red' : '';
   }
 
   function checkValidity() {
