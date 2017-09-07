@@ -91,6 +91,11 @@
     checkFieldValidity(price);
   }
 
+  function sendNoticeFormData(evt) {
+    evt.preventDefault();
+    window.backend.save(new FormData(noticeForm), noticeForm.reset());
+  }
+
   init();
 
   timein.addEventListener('change', timeinChangeHandler);
@@ -98,9 +103,5 @@
   type.addEventListener('change', typePriceChangeHandler);
   roomNumber.addEventListener('change', roomNumberCapacityChangeHandler);
   formSubmit.addEventListener('click', checkValidity);
-
-  noticeForm.addEventListener('submit', function (evt) {
-    evt.preventDefault();
-    window.backend.save(new FormData(noticeForm), noticeForm.reset());
-  });
+  noticeForm.addEventListener('submit', sendNoticeFormData);
 })();
