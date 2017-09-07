@@ -99,13 +99,10 @@
   timeout.addEventListener('change', timeoutChangeHandler);
   type.addEventListener('change', typePriceChangeHandler);
   roomNumber.addEventListener('change', roomNumberCapacityChangeHandler);
-  // formSubmit.addEventListener('click', checkValidity);
+  formSubmit.addEventListener('click', checkValidity);
 
   noticeForm.addEventListener('submit', function (evt) {
     evt.preventDefault();
-    checkValidity();
-    window.backend.save(new FormData(noticeForm), function () {
-      noticeForm.reset();
-    });
+    window.backend.save(new FormData(noticeForm), noticeForm.reset());
   });
 })();
