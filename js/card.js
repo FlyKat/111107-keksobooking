@@ -41,14 +41,14 @@
   function renderAdCard(index) {
     var dialogPanel = dialog.querySelector('.dialog__panel');
 
-    dialog.replaceChild(ads[index], dialogPanel);
+    dialog.replaceChild(getAdCard(window.data.ads[index]), dialogPanel);
   }
 
   function renderAdCardAvatar(index) {
     var avatar = dialog.querySelector('.dialog__title');
     var avatarImg = avatar.querySelector('img');
 
-    avatarImg.src = ads[index].author.avatar;
+    avatarImg.src = window.data.ads[index].author.avatar;
   }
 
   window.card = {

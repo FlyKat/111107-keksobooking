@@ -15,7 +15,6 @@
 
   var dialog = document.querySelector('.dialog');
   var dialogClose = dialog.querySelector('.dialog__close');
-  //var ads = window.data.ads;
   var pinMap = document.querySelector('.tokyo__pin-map');
   var pinMain = pinMap.querySelector('.pin__main');
 
@@ -24,7 +23,7 @@
 
   function init() {
     closePopup();
-     window.backend.load(loadHandler, errorHandler);  // если я правильно поняла то, что должно сразу при загрузке страницы
+    window.backend.load(loadHandler, errorHandler);
   }
 
   function loadHandler(ads) {

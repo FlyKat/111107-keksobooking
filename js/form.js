@@ -47,6 +47,7 @@
   function init() {
     syncWithOptions(capacity, FORM_VALUES.capacities[0]);
     price.min = '1000';
+    // address.value =
   }
 
   function syncValues(field, value) {
