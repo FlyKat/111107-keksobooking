@@ -8,10 +8,11 @@
 
   /**
    * Создает пин
-   * @param  {[obj]} ad
-   * @return {[type]} DOM-элемент
+   * @param  {odject} ad
+   * @param  {number} i
+   * @return {type}
    */
-  function getPin(ad) {
+  function getPin(ad, i) {
     var pin = document.createElement('div');
     var pinImg = document.createElement('img');
 
@@ -19,6 +20,7 @@
     pin.style.left = ad.location.x - PIN.width / 2 + 'px';
     pin.style.top = ad.location.y - PIN.height + 'px';
     pin.tabIndex = 0;
+    pin.setAttribute('data-index', i);
 
     pinImg.className = 'rounded';
     pinImg.width = 40;
@@ -38,8 +40,8 @@
     var pinMap = document.querySelector('.tokyo__pin-map');
     var fragment = document.createDocumentFragment();
 
-    ads.forEach(function (ad) {
-      fragment.appendChild(getPin(ad));
+    ads.forEach(function (ad, i) {
+      fragment.appendChild(getPin(ad, i));
     });
 
     pinMap.appendChild(fragment);

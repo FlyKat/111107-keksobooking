@@ -46,6 +46,9 @@
 
   function init() {
     syncWithOptions(capacity, FORM_VALUES.capacities[0]);
+    price.min = '1000';
+    window.map.setAddressValue(address);
+    // address.readOnly = true;
   }
 
   function syncValues(field, value) {
@@ -59,7 +62,7 @@
 
   function syncWithOptions(field, values) {
     for (var i = 0; i < field.options.length; i++) {
-      (values.indexOf(field.options[i].value) === -1) ? field.options[i].disabled = true : field.options[i].disabled = false; //почему ругается тревис?
+      field.options[i].disabled = (values.indexOf(field.options[i].value) === -1) ? true : false;
       field.value = values[0];
     }
   }
@@ -81,15 +84,23 @@
   }
 
   function checkFieldValidity(field) {
-    if (field.checkValidity() === false) {
-      field.style.border = '1px solid red';
-    }
+    field.style.border = (field.checkValidity() === false) ? '1px solid red' : '';
   }
 
   function checkValidity() {
     checkFieldValidity(title);
     checkFieldValidity(address);
     checkFieldValidity(price);
+  }
+
+  function resetNoticeForm() {
+    noticeForm.reset();
+    window.map.setAddressValue(address);
+  }
+
+  function sendNoticeFormData(evt) {
+    evt.preventDefault();
+    window.backend.save(new FormData(noticeForm), resetNoticeForm);
   }
 
   init();
@@ -99,4 +110,5 @@
   type.addEventListener('change', typePriceChangeHandler);
   roomNumber.addEventListener('change', roomNumberCapacityChangeHandler);
   formSubmit.addEventListener('click', checkValidity);
+  noticeForm.addEventListener('submit', sendNoticeFormData);
 })();

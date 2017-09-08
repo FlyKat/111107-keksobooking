@@ -8,12 +8,11 @@
   };
 
   var dialog = document.querySelector('.dialog');
-  var ads = window.data.ads;
 
   /**
    *На основе шаблона и данных из массива создает объявление
-   * @param  {[object]} ad
-   * @return {[type]} DOM-элемент
+   * @param  {object} ad
+   * @return {type} DOM-элемент
    */
   function getAdCard(ad) {
     var lodgeTemplate = document.querySelector('#lodge-template').content;
@@ -42,14 +41,14 @@
   function renderAdCard(index) {
     var dialogPanel = dialog.querySelector('.dialog__panel');
 
-    dialog.replaceChild(getAdCard(ads[index]), dialogPanel);
+    dialog.replaceChild(getAdCard(window.data.ads[index]), dialogPanel);
   }
 
   function renderAdCardAvatar(index) {
     var avatar = dialog.querySelector('.dialog__title');
     var avatarImg = avatar.querySelector('img');
 
-    avatarImg.src = ads[index].author.avatar;
+    avatarImg.src = window.data.ads[index].author.avatar;
   }
 
   window.card = {

@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var TITLES = [
+  /** var TITLES = [
     'Большая уютная квартира',
     'Маленькая неуютная квартира',
     'Огромный прекрасный дворец',
@@ -59,9 +59,9 @@
 
   /**
   *Возвращает массив объявлений
-  * @return {[array]}
+  * @return {array}
   */
-  function getAds() {
+  /** function getAds() {
     var ads = [];
     var shuffle = window.util.shuffle;
     var getRandomIntInRange = window.util.getRandomIntInRange;
@@ -102,9 +102,9 @@
     }
 
     return ads;
-  }
+  } **/
 
   window.data = {
-    ads: getAds(),
+    ads: [],
   };
 })();

@@ -42,8 +42,8 @@
 
   /**
   * Возвращает массив, перетасованный по алгоритму Фишера–Йейтса в варианте Дуршенфельда
-  * @param  {[array]} arr
-  * @return {[array]}
+  * @param  {array} arr
+  * @return {array}
   */
   function shuffle(arr) {
     for (var i = arr.length - 1; i > 0; i--) {
