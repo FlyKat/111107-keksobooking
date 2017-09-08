@@ -5,9 +5,9 @@
     var pinMap = document.querySelector('.tokyo__pin-map');
     var pinMain = pinMap.querySelector('.pin__main');
     var pin;
-    var pinImg;
+      var pinImg;  // Почему eslint ругается на эту строку?
 
-    if (evt.target === pinMain || evt.target.parentNode === pinMain) {
+    if (evt.target === pinMain || evt.target.parentNode === pinMain) {  // можно ли оптимизировать строки 10 - 20 ?
       return;
     }
 
