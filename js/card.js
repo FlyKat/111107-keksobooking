@@ -11,8 +11,8 @@
 
   /**
    *На основе шаблона и данных из массива создает объявление
-   * @param  {[object]} ad
-   * @return {[type]} DOM-элемент
+   * @param  {object} ad
+   * @return {type} DOM-элемент
    */
   function getAdCard(ad) {
     var lodgeTemplate = document.querySelector('#lodge-template').content;

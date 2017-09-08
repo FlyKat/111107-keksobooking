@@ -59,7 +59,7 @@
 
   /**
   *Возвращает массив объявлений
-  * @return {[array]}
+  * @return {array}
   */
   function getAds() {
     var ads = [];
