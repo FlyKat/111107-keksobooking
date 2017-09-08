@@ -5,19 +5,15 @@
     var pinMap = document.querySelector('.tokyo__pin-map');
     var pinMain = pinMap.querySelector('.pin__main');
     var pin;
-    var pinImg;//  Почему eslint ругается на эту строку?
 
-    // можно ли оптимизировать строки 10 - 20 ?
     if (evt.target === pinMain || evt.target.parentNode === pinMain) {
       return;
     }
 
     if (evt.target.classList.contains('pin')) {
       pin = evt.target;
-      pinImg = evt.target.firstChild;
     } else {
       pin = evt.target.parentNode;
-      pinImg = evt.target;
     }
 
     var index = pin.getAttribute('data-index');
