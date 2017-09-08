@@ -10,11 +10,7 @@
       return;
     }
 
-    if (evt.target.classList.contains('pin')) {
-      pin = evt.target;
-    } else {
-      pin = evt.target.parentNode;
-    }
+    pin = (evt.target.classList.contains('pin')) ? evt.target : evt.target.parentNode;
 
     var index = pin.getAttribute('data-index');
 
