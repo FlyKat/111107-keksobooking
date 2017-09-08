@@ -93,9 +93,14 @@
     checkFieldValidity(price);
   }
 
+  function resetNoticeForm() {
+    noticeForm.reset();
+    window.map.setAddressValue(address);
+  }
+
   function sendNoticeFormData(evt) {
     evt.preventDefault();
-    window.backend.save(new FormData(noticeForm), noticeForm.reset());
+    window.backend.save(new FormData(noticeForm), resetNoticeForm);
   }
 
   init();

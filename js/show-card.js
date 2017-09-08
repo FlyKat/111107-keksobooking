@@ -5,9 +5,10 @@
     var pinMap = document.querySelector('.tokyo__pin-map');
     var pinMain = pinMap.querySelector('.pin__main');
     var pin;
-      var pinImg;  // Почему eslint ругается на эту строку?
+    var pinImg;//  Почему eslint ругается на эту строку?
 
-    if (evt.target === pinMain || evt.target.parentNode === pinMain) {  // можно ли оптимизировать строки 10 - 20 ?
+    // можно ли оптимизировать строки 10 - 20 ?
+    if (evt.target === pinMain || evt.target.parentNode === pinMain) {
       return;
     }
 
