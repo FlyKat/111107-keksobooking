@@ -12,10 +12,17 @@
         case 200:
           loadHandler(xhr.response);
           break;
+        case 404:
+          errorHandler('Страница не найдена');
+          break;
+        case 500:
+          errorHandler('Внутренняя ошибка сервера');
+          break;
         default:
           errorHandler('Неизвестный статус: ' + xhr.status + ' ' + xhr.statusText);
       }
     });
+
 
     xhr.addEventListener('error', function () {
       errorHandler('Произошла ошибка соединения');
