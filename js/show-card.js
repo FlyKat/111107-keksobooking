@@ -13,7 +13,7 @@
     pin = (evt.target.classList.contains('pin')) ?
       evt.target : evt.target.parentNode;
 
-    var index = pin.getAttribute('data-index');
+    var index = pin.dataset.index;
 
     window.map.deactivatePin();
     window.util.addClass(pin, 'pin--active');

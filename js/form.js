@@ -93,7 +93,7 @@
       '1px solid red' : '';
   }
 
-  function checkFormValidity() {
+  function formCheckValidityHandler() {
     checkIsFieldValid(title);
     checkIsFieldValid(address);
     checkIsFieldValid(price);
@@ -104,7 +104,7 @@
     window.map.setAddressValue(address);
   }
 
-  function sendNoticeFormData(evt) {
+  function noticeFormSendDataHandler(evt) {
     evt.preventDefault();
     window.backend.save(new FormData(noticeForm), resetNoticeForm);
   }
@@ -115,6 +115,6 @@
   timeout.addEventListener('change', timeoutChangeHandler);
   type.addEventListener('change', typePriceChangeHandler);
   roomNumber.addEventListener('change', roomNumberCapacityChangeHandler);
-  formSubmit.addEventListener('click', checkFormValidity);
-  noticeForm.addEventListener('submit', sendNoticeFormData);
+  formSubmit.addEventListener('click', formCheckValidityHandler);
+  noticeForm.addEventListener('submit', noticeFormSendDataHandler);
 })();

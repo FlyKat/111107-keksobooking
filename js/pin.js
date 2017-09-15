@@ -9,6 +9,8 @@
     HEIGHT: 75
   };
 
+  var pinMap = document.querySelector('.tokyo__pin-map');
+
   /**
    * @param  {odject} advert
    * @param  {number} i
@@ -22,7 +24,7 @@
     pin.style.left = advert.location.x - Pin.WIDTH / 2 + 'px';
     pin.style.top = advert.location.y - Pin.HEIGHT + 'px';
     pin.tabIndex = 0;
-    pin.setAttribute('data-index', i);
+    pin.dataset.index = i;
 
     pinImg.className = 'rounded';
     pinImg.width = 40;
@@ -38,7 +40,6 @@
    * @param  {array} data
    */
   function renderPins(data) {
-    var pinMap = document.querySelector('.tokyo__pin-map');
     var fragment = document.createDocumentFragment();
 
     data.forEach(function (obj, i) {
