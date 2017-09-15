@@ -10,24 +10,24 @@
   };
 
   /**
-   * @param  {odject} ad
+   * @param  {odject} advert
    * @param  {number} i
    * @return {HTMLElement} pin
    */
-  function createPin(ad, i) {
+  function createPin(advert, i) {
     var pin = document.createElement('div');
     var pinImg = document.createElement('img');
 
     pin.className = 'pin';
-    pin.style.left = ad.location.x - Pin.WIDTH / 2 + 'px';
-    pin.style.top = ad.location.y - Pin.HEIGHT + 'px';
+    pin.style.left = advert.location.x - Pin.WIDTH / 2 + 'px';
+    pin.style.top = advert.location.y - Pin.HEIGHT + 'px';
     pin.tabIndex = 0;
     pin.setAttribute('data-index', i);
 
     pinImg.className = 'rounded';
     pinImg.width = 40;
     pinImg.height = 40;
-    pinImg.src = ad.author.avatar;
+    pinImg.src = advert.author.avatar;
 
     pin.appendChild(pinImg);
 

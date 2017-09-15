@@ -18,10 +18,10 @@
     window.map.deactivatePin();
     window.util.addClass(pin, 'pin--active');
 
-    if (window.map.adsFiltered.length === 0) {
-      window.card.renderAdCard(window.map.ads[index]);
+    if (window.map.advertsFiltered.length === 0) {
+      window.card.renderAdvertCard(window.map.adverts[index]);
     } else {
-      window.card.renderAdCard(window.map.adsFiltered[index]);
+      window.card.renderAdvertCard(window.map.advertsFiltered[index]);
     }
 
     window.map.openPopup();

@@ -45,7 +45,7 @@
       return item.value;
     });
 
-    return window.map.ads.filter(function (item) {
+    return window.map.adverts.filter(function (item) {
       if (!setFilterValues(houseType.value, item.offer.type)) {
         return false;
       }

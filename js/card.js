@@ -10,53 +10,53 @@
   var dialog = document.querySelector('.dialog');
 
   /**
-   * @param  {object} ad
-   * @return {HTMLElement} adCard
+   * @param  {object} advert
+   * @return {HTMLElement} advertCard
    */
-  function createAdCard(ad) {
+  function createAdvertCard(advert) {
     var lodgeTemplate = document.querySelector('#lodge-template').content;
-    var adCard = lodgeTemplate.querySelector('.dialog__panel').cloneNode(true);
+    var advertCard = lodgeTemplate.querySelector('.dialog__panel').cloneNode(true);
 
-    adCard.querySelector('.lodge__title').textContent = ad.offer.title;
-    adCard.querySelector('.lodge__address').textContent = ad.offer.address;
-    adCard.querySelector('.lodge__price').textContent = ad.offer.price + '\u20bd/ночь';
-    adCard.querySelector('.lodge__type').textContent = TYPES_CIRILLIC[ad.offer.type];
+    advertCard.querySelector('.lodge__title').textContent = advert.offer.title;
+    advertCard.querySelector('.lodge__address').textContent = advert.offer.address;
+    advertCard.querySelector('.lodge__price').textContent = advert.offer.price + '\u20bd/ночь';
+    advertCard.querySelector('.lodge__type').textContent = TYPES_CIRILLIC[advert.offer.type];
 
-    adCard.querySelector('.lodge__rooms-and-guests').textContent = 'Для '
-      + ad.offer.guests + ' гостей в ' + ad.offer.rooms + ' комнатах';
-    adCard.querySelector('.lodge__checkin-time').textContent = 'Заезд после '
-      + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
+    advertCard.querySelector('.lodge__rooms-and-guests').textContent = 'Для '
+      + advert.offer.guests + ' гостей в ' + advert.offer.rooms + ' комнатах';
+    advertCard.querySelector('.lodge__checkin-time').textContent = 'Заезд после '
+      + advert.offer.checkin + ', выезд до ' + advert.offer.checkout;
 
-    ad.offer.features.forEach(function (feature) {
+    advert.offer.features.forEach(function (feature) {
       var span = document.createElement('span');
       span.className = 'feature__image feature__image--' + feature;
-      adCard.querySelector('.lodge__features').appendChild(span);
+      advertCard.querySelector('.lodge__features').appendChild(span);
     });
 
-    adCard.querySelector('.lodge__description').textContent = ad.offer.description;
+    advertCard.querySelector('.lodge__description').textContent = advert.offer.description;
 
-    ad.offer.photos.forEach(function (photo) {
+    advert.offer.photos.forEach(function (photo) {
       var img = document.createElement('img');
       img.src = photo;
       img.width = '55';
       img.height = '45';
-      adCard.querySelector('.lodge__photos').appendChild(img);
+      advertCard.querySelector('.lodge__photos').appendChild(img);
     });
 
     var avatar = dialog.querySelector('.dialog__title');
     var avatarImg = avatar.querySelector('img');
-    avatarImg.src = ad.author.avatar;
+    avatarImg.src = advert.author.avatar;
 
-    return adCard;
+    return advertCard;
   }
 
-  function renderAdCard(obj) {
+  function renderAdvertCard(obj) {
     var dialogPanel = dialog.querySelector('.dialog__panel');
 
-    dialog.replaceChild(createAdCard(obj), dialogPanel);
+    dialog.replaceChild(createAdvertCard(obj), dialogPanel);
   }
 
   window.card = {
-    renderAdCard: renderAdCard
+    renderAdvertCard: renderAdvertCard
   };
 })();
