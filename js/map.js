@@ -130,7 +130,7 @@
       y: evt.clientY
     };
 
-    function MouseMoveHandler(moveEvt) {
+    function mouseMoveHandler(moveEvt) {
       moveEvt.preventDefault();
 
       var shift = {
@@ -152,15 +152,15 @@
       setAddressValue(noticeFormAdress);
     }
 
-    function MouseUpHandler(upEvt) {
+    function mouseUpHandler(upEvt) {
       upEvt.preventDefault();
 
-      document.removeEventListener('mousemove', MouseMoveHandler);
-      document.removeEventListener('mouseup', MouseUpHandler);
+      document.removeEventListener('mousemove', mouseMoveHandler);
+      document.removeEventListener('mouseup', mouseUpHandler);
     }
 
-    document.addEventListener('mousemove', MouseMoveHandler);
-    document.addEventListener('mouseup', MouseUpHandler);
+    document.addEventListener('mousemove', mouseMoveHandler);
+    document.addEventListener('mouseup', mouseUpHandler);
   }
 
   function addressChangeHandler() {

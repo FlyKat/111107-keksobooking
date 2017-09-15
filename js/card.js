@@ -27,20 +27,24 @@
     advertCard.querySelector('.lodge__checkin-time').textContent = 'Заезд после '
       + advert.offer.checkin + ', выезд до ' + advert.offer.checkout;
 
+    var lodgeFeatures = advertCard.querySelector('.lodge__features');
+
     advert.offer.features.forEach(function (feature) {
       var span = document.createElement('span');
       span.className = 'feature__image feature__image--' + feature;
-      advertCard.querySelector('.lodge__features').appendChild(span);
+      lodgeFeatures.appendChild(span);
     });
 
     advertCard.querySelector('.lodge__description').textContent = advert.offer.description;
+
+    var lodgePhotos = advertCard.querySelector('.lodge__photos');
 
     advert.offer.photos.forEach(function (photo) {
       var img = document.createElement('img');
       img.src = photo;
       img.width = '55';
       img.height = '45';
-      advertCard.querySelector('.lodge__photos').appendChild(img);
+      lodgePhotos.appendChild(img);
     });
 
     var avatar = dialog.querySelector('.dialog__title');
