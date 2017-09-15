@@ -10,20 +10,23 @@
       return;
     }
 
-    if (evt.target.classList.contains('pin')) {
-      pin = evt.target;
-    } else {
-      pin = evt.target.parentNode;
-    }
+    pin = (evt.target.classList.contains('pin')) ?
+      evt.target : evt.target.parentNode;
 
     var index = pin.getAttribute('data-index');
 
     window.map.deactivatePin();
     window.util.addClass(pin, 'pin--active');
-    window.card.renderAdCard(index);
-    window.card.renderAdCardAvatar(index);
+
+    if (window.map.advertsFiltered.length === 0) {
+      window.card.renderAdvertCard(window.map.adverts[index]);
+    } else {
+      window.card.renderAdvertCard(window.map.advertsFiltered[index]);
+    }
+
     window.map.openPopup();
   }
 
   window.showCard = showCard;
 })();
+

@@ -1,31 +1,33 @@
 'use strict';
 
 (function () {
-  var PIN = {
-    width: 56,
-    height: 75
+  /**
+   * @enum {number}]
+  */
+  var Pin = {
+    WIDTH: 56,
+    HEIGHT: 75
   };
 
   /**
-   * Создает пин
-   * @param  {odject} ad
+   * @param  {odject} advert
    * @param  {number} i
-   * @return {type}
+   * @return {HTMLElement} pin
    */
-  function getPin(ad, i) {
+  function createPin(advert, i) {
     var pin = document.createElement('div');
     var pinImg = document.createElement('img');
 
     pin.className = 'pin';
-    pin.style.left = ad.location.x - PIN.width / 2 + 'px';
-    pin.style.top = ad.location.y - PIN.height + 'px';
+    pin.style.left = advert.location.x - Pin.WIDTH / 2 + 'px';
+    pin.style.top = advert.location.y - Pin.HEIGHT + 'px';
     pin.tabIndex = 0;
     pin.setAttribute('data-index', i);
 
     pinImg.className = 'rounded';
     pinImg.width = 40;
     pinImg.height = 40;
-    pinImg.src = ad.author.avatar;
+    pinImg.src = advert.author.avatar;
 
     pin.appendChild(pinImg);
 
@@ -33,15 +35,14 @@
   }
 
   /**
-  * Cоздает пины в DOM
-  * @param  {array} ads
+   * @param  {array} data
    */
-  function renderPins(ads) {
+  function renderPins(data) {
     var pinMap = document.querySelector('.tokyo__pin-map');
     var fragment = document.createDocumentFragment();
 
-    ads.forEach(function (ad, i) {
-      fragment.appendChild(getPin(ad, i));
+    data.forEach(function (obj, i) {
+      fragment.appendChild(createPin(obj, i));
     });
 
     pinMap.appendChild(fragment);
