@@ -10,11 +10,10 @@
   var dialog = document.querySelector('.dialog');
 
   /**
-   *На основе шаблона и данных из массива создает объявление
    * @param  {object} ad
-   * @return {type} DOM-элемент
+   * @return {HTMLElement} adCard
    */
-  function getAdCard(ad) {
+  function createAdCard(ad) {
     var lodgeTemplate = document.querySelector('#lodge-template').content;
     var adCard = lodgeTemplate.querySelector('.dialog__panel').cloneNode(true);
 
@@ -23,36 +22,41 @@
     adCard.querySelector('.lodge__price').textContent = ad.offer.price + '\u20bd/ночь';
     adCard.querySelector('.lodge__type').textContent = TYPES_CIRILLIC[ad.offer.type];
 
-    adCard.querySelector('.lodge__rooms-and-guests').textContent = 'Для ' + ad.offer.guests + ' гостей в ' + ad.offer.rooms + ' комнатах';
-    adCard.querySelector('.lodge__checkin-time').textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
+    adCard.querySelector('.lodge__rooms-and-guests').textContent = 'Для '
+      + ad.offer.guests + ' гостей в ' + ad.offer.rooms + ' комнатах';
+    adCard.querySelector('.lodge__checkin-time').textContent = 'Заезд после '
+      + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
 
     ad.offer.features.forEach(function (feature) {
-      var element = document.createElement('span');
-      element.className = 'feature__image feature__image--' + feature;
-      adCard.querySelector('.lodge__features').appendChild(element);
+      var span = document.createElement('span');
+      span.className = 'feature__image feature__image--' + feature;
+      adCard.querySelector('.lodge__features').appendChild(span);
     });
 
     adCard.querySelector('.lodge__description').textContent = ad.offer.description;
 
+    ad.offer.photos.forEach(function (photo) {
+      var img = document.createElement('img');
+      img.src = photo;
+      img.width = '55';
+      img.height = '45';
+      adCard.querySelector('.lodge__photos').appendChild(img);
+    });
+
+    var avatar = dialog.querySelector('.dialog__title');
+    var avatarImg = avatar.querySelector('img');
+    avatarImg.src = ad.author.avatar;
 
     return adCard;
   }
 
-  function renderAdCard(index) {
+  function renderAdCard(obj) {
     var dialogPanel = dialog.querySelector('.dialog__panel');
 
-    dialog.replaceChild(getAdCard(window.data.ads[index]), dialogPanel);
-  }
-
-  function renderAdCardAvatar(index) {
-    var avatar = dialog.querySelector('.dialog__title');
-    var avatarImg = avatar.querySelector('img');
-
-    avatarImg.src = window.data.ads[index].author.avatar;
+    dialog.replaceChild(createAdCard(obj), dialogPanel);
   }
 
   window.card = {
-    renderAdCard: renderAdCard,
-    renderAdCardAvatar: renderAdCardAvatar,
+    renderAdCard: renderAdCard
   };
 })();

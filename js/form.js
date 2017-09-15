@@ -1,37 +1,42 @@
 'use strict';
 
 (function () {
-  var FORM_VALUES = {
-    times: [
-      '12:00',
-      '13:00',
-      '14:00'
-    ],
-    types: [
-      'flat',
-      'bungalo',
-      'house',
-      'palace'
-    ],
-    prices: [
-      1000,
-      0,
-      5000,
-      10000
-    ],
-    roomNumbers: [
-      '1',
-      '2',
-      '3',
-      '100'
-    ],
-    capacities: [
-      ['1'],
-      ['2', '1'],
-      ['3', '2', '1'],
-      ['0']
-    ]
-  };
+  var TIMES = [
+    '12:00',
+    '13:00',
+    '14:00'
+  ];
+
+  var TYPES = [
+    'flat',
+    'bungalo',
+    'house',
+    'palace'
+  ];
+
+  var PRICES = [
+    1000,
+    0,
+    10000,
+    10000
+  ];
+
+  var ROOMS_NUMBER = [
+    '1',
+    '2',
+    '3',
+    '100'
+  ];
+
+  var CAPACITIES = [
+    ['1'],
+    ['2', '1'],
+    ['3', '2', '1'],
+    ['0']
+  ];
+
+  var FLAT_PRICE_MIN = 1000;
+
 
   var noticeForm = document.querySelector('.notice__form');
   var title = noticeForm.querySelector('#title');
@@ -45,10 +50,9 @@
   var formSubmit = noticeForm.querySelector('.form__submit');
 
   function init() {
-    syncWithOptions(capacity, FORM_VALUES.capacities[0]);
-    price.min = '1000';
+    syncWithOptions(capacity, CAPACITIES[0]);
+    price.min = FLAT_PRICE_MIN;
     window.map.setAddressValue(address);
-    // address.readOnly = true;
   }
 
   function syncValues(field, value) {
@@ -62,35 +66,37 @@
 
   function syncWithOptions(field, values) {
     for (var i = 0; i < field.options.length; i++) {
-      field.options[i].disabled = (values.indexOf(field.options[i].value) === -1) ? true : false;
+      field.options[i].disabled = (values.indexOf(field.options[i].value) === -1) ?
+        true : false;
       field.value = values[0];
     }
   }
 
   function timeinChangeHandler(evt) {
-    window.synchronizeFields(evt.target, timeout, FORM_VALUES.times, FORM_VALUES.times, syncValues);
+    window.synchronizeFields(evt.target, timeout, TIMES, TIMES, syncValues);
   }
 
   function timeoutChangeHandler(evt) {
-    window.synchronizeFields(evt.target, timein, FORM_VALUES.times, FORM_VALUES.times, syncValues);
+    window.synchronizeFields(evt.target, timein, TIMES, TIMES, syncValues);
   }
 
   function typePriceChangeHandler(evt) {
-    window.synchronizeFields(evt.target, price, FORM_VALUES.types, FORM_VALUES.prices, syncValueWithMin);
+    window.synchronizeFields(evt.target, price, TYPES, PRICES, syncValueWithMin);
   }
 
   function roomNumberCapacityChangeHandler(evt) {
-    window.synchronizeFields(evt.target, capacity, FORM_VALUES.roomNumbers, FORM_VALUES.capacities, syncWithOptions);
+    window.synchronizeFields(evt.target, capacity, ROOMS_NUMBER, CAPACITIES, syncWithOptions);
   }
 
-  function checkFieldValidity(field) {
-    field.style.border = (field.checkValidity() === false) ? '1px solid red' : '';
+  function checkIsFieldValid(field) {
+    field.style.border = (field.checkValidity() === false) ?
+      '1px solid red' : '';
   }
 
-  function checkValidity() {
-    checkFieldValidity(title);
-    checkFieldValidity(address);
-    checkFieldValidity(price);
+  function checkFormValidity() {
+    checkIsFieldValid(title);
+    checkIsFieldValid(address);
+    checkIsFieldValid(price);
   }
 
   function resetNoticeForm() {
@@ -109,6 +115,6 @@
   timeout.addEventListener('change', timeoutChangeHandler);
   type.addEventListener('change', typePriceChangeHandler);
   roomNumber.addEventListener('change', roomNumberCapacityChangeHandler);
-  formSubmit.addEventListener('click', checkValidity);
+  formSubmit.addEventListener('click', checkFormValidity);
   noticeForm.addEventListener('submit', sendNoticeFormData);
 })();

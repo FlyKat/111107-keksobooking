@@ -10,16 +10,23 @@
       return;
     }
 
-    pin = (evt.target.classList.contains('pin')) ? evt.target : evt.target.parentNode;
+    pin = (evt.target.classList.contains('pin')) ?
+      evt.target : evt.target.parentNode;
 
     var index = pin.getAttribute('data-index');
 
     window.map.deactivatePin();
     window.util.addClass(pin, 'pin--active');
-    window.card.renderAdCard(index);
-    window.card.renderAdCardAvatar(index);
+
+    if (window.map.adsFiltered) {
+      window.card.renderAdCard(window.map.adsFiltered[index]);
+    } else {
+      window.card.renderAdCard(window.map.ads[index]);
+    }
+
     window.map.openPopup();
   }
 
   window.showCard = showCard;
 })();
+

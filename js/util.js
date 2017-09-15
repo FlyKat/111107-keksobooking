@@ -1,19 +1,22 @@
 'use strict';
 
 (function () {
-  var KEYCODS = {
-    esc: 27,
-    enter: 13
+  /**
+   @enum {number}
+   */
+  var KeyCode = {
+    ESC: 27,
+    ENTER: 13
   };
 
   function isEscEvent(evt, action) {
-    if (evt.keyCode === KEYCODS.esc) {
+    if (evt.keyCode === KeyCode.ESC) {
       action();
     }
   }
 
   function isEnterEvent(evt, action) {
-    if (evt.keyCode === KEYCODS.enter) {
+    if (evt.keyCode === KeyCode.ENTER) {
       action();
     }
   }
@@ -21,7 +24,7 @@
   /**
   * Возвращает случайный номер в заданном диапазоне (включая max)
   * @param  {number} min
-  * @param  {number} max [
+  * @param  {number} max
   * @return {number}
   */
   function getRandomIntInRange(min, max) {
@@ -31,7 +34,7 @@
   /**
   * Возвращает случайный элемент массива
   * @param  {array} arr
-  * @return {type}
+  * @return {element}
   */
   function getRandomElement(arr) {
     var randomIndex = Math.floor(Math.random() * arr.length);
@@ -41,7 +44,8 @@
   }
 
   /**
-  * Возвращает массив, перетасованный по алгоритму Фишера–Йейтса в варианте Дуршенфельда
+  * Возвращает массив, перетасованный по алгоритму
+  * Фишера–Йейтса в варианте Дуршенфельда
   * @param  {array} arr
   * @return {array}
   */

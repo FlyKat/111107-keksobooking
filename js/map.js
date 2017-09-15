@@ -1,12 +1,17 @@
 'use strict';
 
 (function () {
-  var MAP = {
-    minX: 0,
-    maxX: 1200,
-    minY: 100,
-    maxY: 550
+  /**
+   * @enum {number}
+  */
+  var MapBorders = {
+    LEFT: 0,
+    RIGHT: 1200,
+    TOP: 100,
+    BOTTOM: 550
   };
+
+  var pinInitAmount = 3;
 
   var dialog = document.querySelector('.dialog');
   var dialogClose = dialog.querySelector('.dialog__close');
@@ -14,6 +19,7 @@
   var pinMain = pinMap.querySelector('.pin__main');
   var noticeForm = document.querySelector('.notice__form');
   var noticeFormAdress = noticeForm.querySelector('#address');
+  var filtersForm = document.querySelector('.tokyo__filters');
 
   var pinMainShift = {
     x: Math.round(pinMain.offsetWidth / 2),
@@ -22,29 +28,34 @@
 
   function init() {
     closePopup();
-    window.backend.load(loadHandler, errorHandler);
+    window.backend.load(loadHandler, window.backend.showError);
   }
 
-  function loadHandler(ads) {
-    window.data.ads = ads;
-    window.pin.renderPins(ads);
+  function loadHandler(data) {
+    window.map.ads = data;
+    window.pin.renderPins(window.map.ads.slice(0, pinInitAmount));
   }
 
-  function errorHandler(errorMessage) {
-    var node = document.createElement('div');
+  function renderPinsAfterSetFilters() {
+    closePopup();
 
-    node.style.zIndex = '100';
-    node.style.margin = '0 auto';
-    node.style.textAlign = 'center';
-    node.style.backgroundColor = 'red';
-    node.style.position = 'absolute';
-    node.style.left = 0;
-    node.style.right = 0;
-    node.style.fontSize = '30px';
+    while (pinMap.children.length !== 1) {
+      pinMap.removeChild(pinMap.children[1]);
+    }
 
-    node.textContent = errorMessage;
-    document.body.insertAdjacentElement('afterbegin', node);
+    window.map.adsFiltered = window.filter();
+    window.pin.renderPins(window.map.adsFiltered);
   }
+
+  function filterChangeHandler(evt) {
+    if (!evt.target.classList.contains('tokyo__filter')
+        && evt.target.name !== 'feature') {
+      return;
+    }
+
+    window.debounce(renderPinsAfterSetFilters);
+  }
+
 
   function popupEscPressHandler(evt) {
     window.util.isEscEvent(evt, function () {
@@ -81,28 +92,32 @@
     });
   }
 
-  function closeDialogClickHandler() {
+  function closeDialogClickHandler(evt) {
+    evt.preventDefault();
     closePopup();
     deactivatePin();
   }
 
   function closeDialogPressHandler(evt) {
     window.util.isEnterEvent(evt, function () {
+      evt.preventDefault();
       closePopup();
       deactivatePin();
     });
   }
 
   function setAddressValue(address) {
-    address.value = 'x: ' + (pinMain.offsetLeft + pinMainShift.x) + ', ' + 'y: ' + (pinMain.offsetTop + pinMainShift.y);
+    address.value = 'x: ' + (pinMain.offsetLeft + pinMainShift.x) + ', '
+      + 'y: ' + (pinMain.offsetTop + pinMainShift.y);
   }
 
   function setElementPosition(elem, coords) {
-    if (MAP.minX < coords.x && coords.x < (MAP.maxX - pinMain.offsetWidth)) {
+    if (MapBorders.LEFT < coords.x && coords.x
+        < (MapBorders.RIGHT - pinMain.offsetWidth)) {
       elem.style.left = coords.x + 'px';
     }
 
-    if (MAP.minY < coords.y && coords.y < MAP.maxY) {
+    if (MapBorders.TOP < coords.y && coords.y < MapBorders.BOTTOM) {
       elem.style.top = coords.y + 'px';
     }
   }
@@ -172,10 +187,13 @@
   dialogClose.addEventListener('keydown', closeDialogPressHandler);
   pinMain.addEventListener('mousedown', pinMainMousedownHandler);
   noticeFormAdress.addEventListener('change', addressChangeHandler);
+  filtersForm.addEventListener('change', filterChangeHandler);
 
   window.map = {
     deactivatePin: deactivatePin,
     openPopup: openPopup,
-    setAddressValue: setAddressValue
+    setAddressValue: setAddressValue,
+    ads: [],
+    adsFiltered: []
   };
 })();
