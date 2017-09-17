@@ -66,8 +66,7 @@
 
   function syncWithOptions(field, values) {
     for (var i = 0; i < field.options.length; i++) {
-      field.options[i].disabled = (values.indexOf(field.options[i].value) === -1) ?
-        true : false;
+      field.options[i].disabled = (values.indexOf(field.options[i].value) === -1);
       field.value = values[0];
     }
   }
