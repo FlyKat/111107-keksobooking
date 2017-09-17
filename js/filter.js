@@ -37,34 +37,21 @@
     return true;
   }
 
-
-  function setFilters() {
+  function filter() {
     var houseFeatures = [].filter.call(features, function (item) {
       return item.checked;
     }).map(function (item) {
       return item.value;
     });
 
-    return window.map.adverts.filter(function (item) {
-      if (!setFilterValues(houseType.value, item.offer.type)) {
-        return false;
-      }
-      if (!setFilterPrice(item.offer.price)) {
-        return false;
-      }
-      if (!setFilterValues(roomsNumber.value, item.offer.rooms + '')) {
-        return false;
-      }
-      if (!setFilterValues(guestsNumber.value, item.offer.guests + '')) {
-        return false;
-      }
-      if (!setFilterFeatures(houseFeatures, item.offer.features)) {
-        return false;
-      }
-
-      return true;
+    return window.map.adverts.filter(function (advert) {
+      return setFilterValues(houseType.value, advert.offer.type)
+             && setFilterPrice(advert.offer.price)
+             && setFilterValues(roomsNumber.value, advert.offer.rooms.toString())
+             && setFilterValues(guestsNumber.value, advert.offer.guests.toString())
+             && setFilterFeatures(houseFeatures, advert.offer.features);
     });
   }
 
-  window.filter = setFilters;
+  window.filter = filter;
 })();

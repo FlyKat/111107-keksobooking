@@ -7,14 +7,45 @@
     bungalo: 'Бунгало'
   };
 
+  var IMG_SIZE = {
+    width: 50,
+    height: 40
+  };
+
   var dialog = document.querySelector('.dialog');
+  var lodgeTemplate = document.querySelector('#lodge-template').content;
+
+  function getFeatures(features) {
+    var fragment = document.createDocumentFragment();
+
+    features.forEach(function (feature) {
+      var span = document.createElement('span');
+      span.className = 'feature__image feature__image--' + feature;
+      fragment.appendChild(span);
+    });
+
+    return fragment;
+  }
+
+  function getPhotos(photos) {
+    var fragment = document.createDocumentFragment();
+
+    photos.forEach(function (photo) {
+      var img = document.createElement('img');
+      img.src = photo;
+      img.width = IMG_SIZE.width;
+      img.height = IMG_SIZE.height;
+      fragment.appendChild(img);
+    });
+
+    return fragment;
+  }
 
   /**
    * @param  {object} advert
    * @return {HTMLElement} advertCard
    */
   function createAdvertCard(advert) {
-    var lodgeTemplate = document.querySelector('#lodge-template').content;
     var advertCard = lodgeTemplate.querySelector('.dialog__panel').cloneNode(true);
 
     advertCard.querySelector('.lodge__title').textContent = advert.offer.title;
@@ -26,26 +57,8 @@
       + advert.offer.guests + ' гостей в ' + advert.offer.rooms + ' комнатах';
     advertCard.querySelector('.lodge__checkin-time').textContent = 'Заезд после '
       + advert.offer.checkin + ', выезд до ' + advert.offer.checkout;
-
-    var lodgeFeatures = advertCard.querySelector('.lodge__features');
-
-    advert.offer.features.forEach(function (feature) {
-      var span = document.createElement('span');
-      span.className = 'feature__image feature__image--' + feature;
-      lodgeFeatures.appendChild(span);
-    });
-
-    advertCard.querySelector('.lodge__description').textContent = advert.offer.description;
-
-    var lodgePhotos = advertCard.querySelector('.lodge__photos');
-
-    advert.offer.photos.forEach(function (photo) {
-      var img = document.createElement('img');
-      img.src = photo;
-      img.width = '55';
-      img.height = '45';
-      lodgePhotos.appendChild(img);
-    });
+    advertCard.querySelector('.lodge__features').appendChild(getFeatures(advert.offer.features));
+    advertCard.querySelector('.lodge__photos').appendChild(getPhotos(advert.offer.photos));
 
     var avatar = dialog.querySelector('.dialog__title');
     var avatarImg = avatar.querySelector('img');

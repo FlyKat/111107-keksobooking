@@ -11,7 +11,7 @@
     BOTTOM: 550
   };
 
-  var pinInitAmount = 3;
+  var PIN_INIT_AMOUNT = 3;
 
   var dialog = document.querySelector('.dialog');
   var dialogClose = dialog.querySelector('.dialog__close');
@@ -33,7 +33,7 @@
 
   function loadHandler(data) {
     window.map.adverts = data;
-    window.pin.renderPins(window.map.adverts.slice(0, pinInitAmount));
+    window.pin.renderPins(window.map.adverts.slice(0, PIN_INIT_AMOUNT));
   }
 
   function renderPinsAfterSetFilters() {
@@ -164,19 +164,24 @@
   }
 
   function addressChangeHandler() {
-    var coords = noticeFormAdress.value.split(', ');
-    var coordsX = coords[0].replace('x: ', '');
-    var coordsY = coords[1].replace('y: ', '');
-    var pinMainCoordsX = coordsX.trim();
-    var pinMainCoordsY = coordsY.trim();
+    try {
+      var coords = noticeFormAdress.value.split(', ');
+      var coordsX = coords[0].replace('x: ', '');
+      var coordsY = coords[1].replace('y: ', '');
+      var pinMainCoordsX = coordsX.trim();
+      var pinMainCoordsY = coordsY.trim();
 
-    var shift = {
-      x: pinMainCoordsX - Math.round(pinMainShift.x),
-      y: pinMainCoordsY - pinMainShift.y,
-    };
+      var shift = {
+        x: pinMainCoordsX - Math.round(pinMainShift.x),
+        y: pinMainCoordsY - pinMainShift.y,
+      };
 
-    setElementPosition(pinMain, shift);
-    setAddressValue(noticeFormAdress);
+      setElementPosition(pinMain, shift);
+      setAddressValue(noticeFormAdress);
+
+    } catch (err) {
+      setAddressValue(noticeFormAdress);
+    }
   }
 
   init();
