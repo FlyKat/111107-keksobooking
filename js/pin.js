@@ -6,7 +6,8 @@
   */
   var Pin = {
     WIDTH: 56,
-    HEIGHT: 75
+    HEIGHT: 75,
+    IMG_SIZE: 40
   };
 
   var pinMap = document.querySelector('.tokyo__pin-map');
@@ -27,8 +28,8 @@
     pin.dataset.index = i;
 
     pinImg.className = 'rounded';
-    pinImg.width = 40;
-    pinImg.height = 40;
+    pinImg.width = Pin.IMG_SIZE;
+    pinImg.height = Pin.IMG_SIZE;
     pinImg.src = advert.author.avatar;
 
     pin.appendChild(pinImg);
