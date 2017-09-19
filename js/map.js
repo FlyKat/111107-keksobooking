@@ -163,27 +163,6 @@
     document.addEventListener('mouseup', mouseUpHandler);
   }
 
-  function addressChangeHandler() {
-    try {
-      var coords = noticeFormAdress.value.split(', ');
-      var coordsX = coords[0].replace('x: ', '');
-      var coordsY = coords[1].replace('y: ', '');
-      var pinMainCoordsX = coordsX.trim();
-      var pinMainCoordsY = coordsY.trim();
-
-      var shift = {
-        x: pinMainCoordsX - Math.round(pinMainShift.x),
-        y: pinMainCoordsY - pinMainShift.y,
-      };
-
-      setElementPosition(pinMain, shift);
-      setAddressValue(noticeFormAdress);
-
-    } catch (err) {
-      setAddressValue(noticeFormAdress);
-    }
-  }
-
   init();
 
   pinMap.addEventListener('click', pinMapClickHandler);
@@ -191,7 +170,6 @@
   dialogClose.addEventListener('click', closeDialogClickHandler);
   dialogClose.addEventListener('keydown', closeDialogPressHandler);
   pinMain.addEventListener('mousedown', pinMainMousedownHandler);
-  noticeFormAdress.addEventListener('change', addressChangeHandler);
   filtersForm.addEventListener('change', filterChangeHandler);
 
   window.map = {

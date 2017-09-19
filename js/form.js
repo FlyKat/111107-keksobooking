@@ -53,6 +53,7 @@
     syncWithOptions(capacity, CAPACITIES[0]);
     price.min = FLAT_PRICE_MIN;
     window.map.setAddressValue(address);
+    address.readOnly = true;
   }
 
   function syncValues(field, value) {
@@ -65,10 +66,12 @@
   }
 
   function syncWithOptions(field, values) {
-    for (var i = 0; i < field.options.length; i++) {
-      field.options[i].disabled = (values.indexOf(field.options[i].value) === -1);
+    var optionsArray = Array.prototype.slice.call(field.options);
+
+    optionsArray.forEach(function (item, index) {
+      field.options[index].disabled = (values.indexOf(item.value) === -1);
       field.value = values[0];
-    }
+    });
   }
 
   function timeinChangeHandler(evt) {
